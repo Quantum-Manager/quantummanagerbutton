@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 paramsForRequest.files.push(currentParams);
                             }
 
-                            jQuery.post(QuantumUtils.getFullUrl('/administrator/index.php?option=com_ajax&plugin=quantummanagercontent&group=editors-xtd&format=raw&scope=' + fm.data.scope
+                            jQuery.post(QuantumUtils.getFullUrl('/administrator/index.php?option=com_ajax&plugin=quantummanagerbutton&group=editors-xtd&format=raw&plugin.task=prepareforcontent&scope=' + fm.data.scope
                                 + '&path=' +  encodeURIComponent(fm.data.path) +
                                 '&v=' + QuantumUtils.randomInteger(111111, 999999)), {
                                     params:  JSON.stringify(paramsForRequest)
