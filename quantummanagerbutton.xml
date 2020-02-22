@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.9" type="plugin" group="editors-xtd" method="upgrade">
+	<name>PLG_BUTTON_QUANTUMMANAGERBUTTON</name>
+	<author>Tsymbal</author>
+	<creationDate>18.09.2019</creationDate>
+	<copyright>Copyright © 2019 Delo Design &amp; NorrNext. All rights reserved.</copyright>
+	<license>https://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>cymbal@delo-design.ru</authorEmail>
+	<authorUrl>https://www.norrnext.com</authorUrl>
+	<version>1.3</version>
+	<description>PLG_BUTTON_QUANTUMMANAGERBUTTON_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_editors-xtd_quantummanagerbutton.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_editors-xtd_quantummanagerbutton.sys.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.plg_editors-xtd_quantummanagerbutton.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.plg_editors-xtd_quantummanagerbutton.sys.ini</language>
+	</languages>
+	<files>
+		<filename plugin="quantummanagerbutton">quantummanagerbutton.php</filename>
+		<filename plugin="quantummanagerbutton">helper.php</filename>
+		<folder>fields</folder>
+	</files>
+	<config>
+		<fields name="params" addfieldpath="/plugins/editors-xtd/quantummanagerbutton/fields">
+			<fieldset name="basic">
+
+				<field type="note"
+					   label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_DOCS_LABEL"
+					   description="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_DOCS"
+					   class="alert alert-info"
+				/>
+
+				<field
+						name="scopes"
+						type="quantummanagerscopesinsert"
+						label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES"
+						required="true"
+						buttons=" "
+						multiple="true">
+					<form>
+						<field
+								name="titleLabel"
+								type="text"
+								default=""
+								label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TITLE"
+								disabled="disabled"
+						/>
+
+						<field
+								name="title"
+								type="hidden"
+						/>
+
+						<field
+								name="id"
+								type="hidden"
+						/>
+
+						<field
+								name="fieldsform"
+								type="subform"
+								label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM"
+								required="true"
+								multiple="true">
+							<form>
+								<field
+										name="nametemplate"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_NAMETEMPLATE"
+								/>
+								<field
+										name="name"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_NAME"
+								/>
+								<field
+										name="default"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_DEFAULT"
+								/>
+								<field
+										name="type"
+										type="list"
+										default="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_TYPE">
+									<option value="text">Text</option>
+									<option value="number">Number</option>
+									<option value="list">List</option>
+									<option value="color">Color</option>
+									<option value="email">Email</option>
+									<option value="url">Url</option>
+									<option value="date">Date</option>
+									<option value="datetime-local">Datetime local</option>
+									<option value="time">Time</option>
+								</field>
+
+								<field
+									name="forlist"
+									type="textarea"
+									default=""
+									label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_FORLIST"
+									showon="type:list"
+								/>
+							</form>
+						</field>
+
+						<field
+							name="templatelist"
+							type="subform"
+							label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_LIST"
+							required="true"
+							multiple="true">
+							<form>
+								<field
+										name="templatename"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_NAME"
+								/>
+
+								<field
+										name="templatebefore"
+										type="textarea"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_BEFORE"
+										rows="10"
+										cols="10"
+										filter="raw"
+								/>
+
+								<field
+										name="template"
+										type="textarea"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_ITEM"
+										rows="10"
+										cols="10"
+										filter="raw"
+								/>
+
+								<field
+										name="templateafter"
+										type="textarea"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_AFTER"
+										rows="10"
+										cols="10"
+										filter="raw"
+								/>
+							</form>
+						</field>
+
+					</form>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
