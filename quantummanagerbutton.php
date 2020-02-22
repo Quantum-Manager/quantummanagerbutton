@@ -1,6 +1,6 @@
 <?php
 /**
- * @package    quantummanagercontent
+ * @package    quantummanagerbutton
  * @author     Dmitry Tsymbal <cymbal@delo-design.ru>
  * @copyright  Copyright © 2019 Delo Design & NorrNext. All rights reserved.
  * @license    GNU General Public License version 3 or later; see license.txt
@@ -16,7 +16,7 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
 
-class PlgButtonQuantummanagercontent extends CMSPlugin
+class PlgButtonQuantummanagerbutton extends CMSPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -157,7 +157,7 @@ EOT
 			}
 
 			JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
-			JLoader::register('QuantummanagercontentHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagercontent/helper.php');
+			JLoader::register('QuantummanagercontentHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
 
 			$scope = $data['scope'];
 			$params = json_decode($data['params'], JSON_OBJECT_AS_ARRAY);
