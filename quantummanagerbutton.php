@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -65,7 +66,7 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 
 		$function = 'function(){}';
 
-		$link = 'index.php?option=com_ajax&amp;plugin=quantummanagerbutton&amp;group=editors-xtd&amp;format=raw&amp;plugin.task=getmodal&amp;e_name=' . $name . '&amp;asset=com_content&amp;author='
+		$link = 'index.php?option=com_ajax&amp;plugin=quantummanagerbutton&amp;group=editors-xtd&amp;format=html&amp;tmpl=component&amp;plugin.task=getmodal&amp;e_name=' . $name . '&amp;asset=com_content&amp;author='
 			. Session::getFormToken() . '=1&amp;function=' . $function;
 
 		$button          = new CMSObject();
@@ -132,20 +133,23 @@ EOT
 
 
 
-	public function onAjaxQuantummanagercontent()
+	public function onAjaxQuantummanagerbutton()
 	{
+
+		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
+		JLoader::register('QuantummanagercontentHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
 
 		$app = Factory::getApplication();
 		$data = $app->input->getArray();
-		$task = $app->input->get('plugin.task');
+		$task = $app->input->get('plugin_task');
 		$html = '';
 
 		if($task === 'getmodal')
 		{
+			QuantummanagerHelper::loadlang();
 			$layout = new FileLayout('default', JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, [
-					'plugins', 'editors-xtd', 'tmpl'
+					'plugins', 'editors-xtd', 'quantummanagerbutton', 'tmpl'
 				]));
-
 			echo $layout->render();
 		}
 
@@ -155,9 +159,6 @@ EOT
 			{
 				$app->close();
 			}
-
-			JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
-			JLoader::register('QuantummanagercontentHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
 
 			$scope = $data['scope'];
 			$params = json_decode($data['params'], JSON_OBJECT_AS_ARRAY);
@@ -325,10 +326,10 @@ EOT
 			}
 
 			echo $html;
+
+			$app->close();
 		}
 
-
-		$app->close();
 	}
 
 
