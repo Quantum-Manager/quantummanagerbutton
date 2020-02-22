@@ -16,6 +16,10 @@
 		<language tag="ru-RU">ru-RU/ru-RU.plg_editors-xtd_quantummanagerbutton.ini</language>
 		<language tag="ru-RU">ru-RU/ru-RU.plg_editors-xtd_quantummanagerbutton.sys.ini</language>
 	</languages>
+	<media folder="media" destination="plg_button_quantummanagerbutton">
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
 	<files>
 		<filename plugin="quantummanagerbutton">quantummanagerbutton.php</filename>
 		<filename plugin="quantummanagerbutton">helper.php</filename>
