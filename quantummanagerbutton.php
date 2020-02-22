@@ -73,11 +73,11 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 		$button->modal   = true;
 		$button->class   = 'btn';
 		$button->link    = $link;
-		$button->text    = Text::_('PLG_BUTTON_QUANTUMMANAGERCONTENT_BUTTON');
+		$button->text    = Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_BUTTON');
 		$button->name    = 'file-add';
 		$button->options = "{handler: 'iframe', size: {x: 1450, y: 700}, classWindow: 'quantummanager-modal-sbox-window'}";
 
-		$label = Text::_('PLG_BUTTON_QUANTUMMANAGERCONTENT_BUTTON');
+		$label = Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_BUTTON');
 
 		Factory::getDocument()->addStyleDeclaration(<<<EOT
 @media screen and (max-width: 1540px) {
@@ -137,7 +137,7 @@ EOT
 	{
 
 		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
-		JLoader::register('QuantummanagercontentHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
+		JLoader::register('QuantummanagerbuttonHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
 
 		$app = Factory::getApplication();
 		$data = $app->input->getArray();
@@ -168,7 +168,7 @@ EOT
 			$type = explode('.', $file);
 			$filetype = end($type);
 			$filesize = filesize(JPATH_ROOT . '/' . $file);
-			$scopesTemplate = $this->params->get('scopes', QuantummanagercontentHelper::defaultValues());
+			$scopesTemplate = $this->params->get('scopes', QuantummanagerbuttonHelper::defaultValues());
 			$variablesParams = [];
 			$html = '';
 
@@ -259,7 +259,7 @@ EOT
 										'{file}' => $file,
 										'{filename}' => $filename,
 										'{type}' => $filetype,
-										'{size}' => $this->convertFilesize($filesize),
+										'{size}' => QuantummanagerHelper::formatFileSize($filesize),
 									];
 
 									foreach ($item['fields'] as $key => $value)
