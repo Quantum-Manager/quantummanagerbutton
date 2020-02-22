@@ -24,6 +24,7 @@
 		<filename plugin="quantummanagerbutton">quantummanagerbutton.php</filename>
 		<filename plugin="quantummanagerbutton">helper.php</filename>
 		<folder>fields</folder>
+		<folder>tmpl</folder>
 	</files>
 	<config>
 		<fields name="params" addfieldpath="/plugins/editors-xtd/quantummanagerbutton/fields">
