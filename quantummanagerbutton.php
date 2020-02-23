@@ -296,7 +296,7 @@ EOT
 
 								if($shortCode)
 								{
-									$templateitems = '[item][variables] ' . json_encode($variablesForTemplate) . '[/variables][template]' . $templateList->template . '[/template][/item]';
+									$templateitems = '[item][variables]' . json_encode($variablesForTemplate) . '[/variables][template]' . $templateList->template . '[/template][/item]';
 								}
 
 								if(preg_match("#^\{.*?\}$#isu", trim($templateList->templateafter)))
