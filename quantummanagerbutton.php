@@ -144,6 +144,12 @@ EOT
 		$task = $app->input->get('plugin_task');
 		$html = '';
 
+		$app = Factory::getApplication();
+		if(!$app->isClient('administrator'))
+		{
+			return;
+		}
+
 		if($task === 'getmodal')
 		{
 			QuantummanagerHelper::loadlang();
