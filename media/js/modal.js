@@ -8,7 +8,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    let formFields = JSON.parse(QuantumContentPlugin.fields);
+    let formFields = JSON.parse(QuantumButtonPlugin.fields);
     let buttonInsert = document.createElement('button');
     let buttonCancel = document.createElement('button');
     let pathFile;
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let body = QuantumUtils.createElement('div', {'class':'table-file-for-insert'});
                 let filesFind = fm.Quantumviewfiles.element.querySelectorAll('.field-list-files .file-item');
                 let files = [];
-                let templateList = JSON.parse(QuantumContentPlugin.templatelist);
+                let templateList = JSON.parse(QuantumButtonPlugin.templatelist);
 
                 header = header.addChild('div');
                 header = header.addChild('select', {'class':'select-file-for-insert'});
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 }
                             ).done(function (response) {
 
-                                let editor = getUrlParameter('e_name');
+                                let editor = QuantumUtils.getUrlParameter('e_name');
                                 let tag = response;
 
                                 if (window.Joomla && Joomla.editors.instances.hasOwnProperty(editor)) {
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         }]
                     ]
-                }, 'Прикрепить файлы');
+                }, QuantumwindowLang.insertFile);
                 header = header.getParent();
 
                 header = header.add('div', {'class': 'help-settings'}, QuantumwindowLang.helpSettings);
@@ -278,12 +278,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
     });
-
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        let results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
 
 });
