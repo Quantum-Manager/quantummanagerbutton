@@ -125,7 +125,14 @@ class QuantummanagerbuttonHelper
 			'images' => (object)[
 				'id' => 'images',
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_IMAGES'),
-				'template' => '<img src="{file}" alt="{alt}" width="{width}" height="{height}" />',
+				'templatelist' => [
+					'templatelist0' => [
+						'templatename' => 'Изображение',
+						'templatebefore' => '',
+						'template' => '<img src="{file}" alt="{alt}" width="{width}" height="{height}" />',
+						'templateafter' => '',
+					]
+				],
 				'fieldsform' => [
 					'fieldsform0' => [
 						'nametemplate' => 'width',
@@ -150,7 +157,14 @@ class QuantummanagerbuttonHelper
 			'docs' => (object)[
 				'id' => 'docs',
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_DOCS'),
-				'template' => '<a href="{file}" target="_blank">{name}</a>',
+				'templatelist' => [
+					'templatelist0' => [
+						'templatename' => 'Ссылка',
+						'templatebefore' => '',
+						'template' => '<a href="{file}" target="_blank">{name}</a>',
+						'templateafter' => '',
+					]
+				],
 				'fieldsform' => [
 					'fieldsform0' => [
 						'nametemplate' => 'name',
@@ -163,13 +177,27 @@ class QuantummanagerbuttonHelper
 			'music' => (object)[
 				'id' => 'music',
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_MUSIC'),
-				'template' => '<audio controls src="{file}"> ' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_MUSIC_TEMPLATE_TEXT') . '</audio>',
+				'templatelist' => [
+					'templatelist0' => [
+						'templatename' => 'Аудио',
+						'templatebefore' => '',
+						'template' => '<audio controls src="{file}"> ' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_MUSIC_TEMPLATE_TEXT') . '</audio>',
+						'templateafter' => '',
+					]
+				],
 				'fieldsform' => '',
 			],
 			'videos' => (object)[
 				'id' => 'videos',
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_VIDEOS'),
-				'template' => '<video src="{file}" autoplay>' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_VIDEOS_TEMPLATE_TEXT') . '</video>',
+				'templatelist' => [
+					'templatelist0' => [
+						'templatename' => 'Аудио',
+						'templatebefore' => '',
+						'template' => '<video src="{file}" autoplay>' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_VIDEOS_TEMPLATE_TEXT') . '</video>',
+						'templateafter' => '',
+					]
+				],
 				'fieldsform' => '',
 			]
 		];
