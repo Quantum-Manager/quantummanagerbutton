@@ -1,3 +1,25 @@
+html, body {
+    padding: 0 !important;
+    overflow-y: hidden;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    height: 100% !important;
+}
+
+#system-message-container {
+    padding: 0 !important;
+}
+
+.quantummanager {
+    width: 100%;
+    height: 100vh !important;
+}
+
 .modalcontentinsert {
 
 }
