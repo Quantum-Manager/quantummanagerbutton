@@ -227,7 +227,7 @@ EOT
 							}
 
 							$html = str_replace($variablesFind, $variablesReplace, $template);
-							$html = preg_replace("#[a-zA-Z]{1,}\=\"\"#isu", '', $html);
+							$html = preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $html);
 						}
 					}
 					else
@@ -294,7 +294,7 @@ EOT
 									else
 									{
 										$item = str_replace($variablesFind, $variablesReplace, $templateList->template);
-										$item = preg_replace("#[a-zA-Z]{1,}\=\"\"#isu", '', $item);
+										$item = preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $item);
 										$templateitems .= $item;
 									}
 

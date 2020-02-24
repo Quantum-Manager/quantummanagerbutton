@@ -39,10 +39,10 @@ body {
 }
 
 .modalcontentinsert .quatummanagermodal-header .select-file-for-insert {
-    height: 42px;
+    height: 30px;
     margin-right: 5px;
     margin-bottom: 0;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .button-file-for-insert {

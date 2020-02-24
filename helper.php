@@ -12,9 +12,17 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
 
 class QuantummanagerbuttonHelper
 {
+
+
+	/**
+	 * @var
+	 * @since version
+	 */
+	public static $template;
 
 
 	public static function loadLang()
@@ -96,8 +104,40 @@ class QuantummanagerbuttonHelper
 			$templatelistFromScope = $scope['templatelist'];
 			foreach ($templatelistFromScope as $keyTemplate => $template)
 			{
-				$templatelist[] = $template['templatename'];
+				$templateItem = '';
+				if(preg_match("#^\{.*?\}$#isu", trim($template['template'])))
+				{
+					$layoutId = str_replace(['{', '}'], '', $template['template']);
+					$templateItem = self::renderLayout($layoutId);
+				}
+				else
+				{
+					$templateItem = $template['template'];
+				}
+
+				$enablefields = [];
+				$matches = [];
+				preg_match_all("#\{(.*?)\}#isu", $templateItem, $matches);
+
+				if(isset($matches[1]))
+				{
+					foreach ($matches[1] as $findField)
+					{
+						if(!in_array($findField, $enablefields))
+						{
+							$enablefields[] = $findField;
+						}
+					}
+
+				}
+
+				$templatelist[] = [
+					'name' => $template['templatename'],
+					'enablefields' => $enablefields,
+				];
+
 			}
+
 			$scope = (array)$scope;
 			$output[$scope['id']] = [
 				'title' => $scope['title'],
@@ -108,6 +148,50 @@ class QuantummanagerbuttonHelper
 		return $output;
 	}
 
+
+	/**
+	 * @param $layoutId
+	 *
+	 * @return string
+	 *
+	 * @throws Exception
+	 * @since version
+	 */
+	public static function renderLayout($layoutId)
+	{
+		$app = Factory::getApplication();
+		$template = $app->getTemplate();
+
+		if(empty(self::$template))
+		{
+			$db = Factory::getDbo();
+			$query = $db->getQuery( true );
+			$query->select( 'template' )
+				->from( '#__template_styles as e' )
+				->where( 'e.client_id = 0')
+				->where( 'e.home = 1')
+				->setLimit(1);
+			$db->setQuery($query);
+			$template = $db->loadObject();
+			if(isset($template->template))
+			{
+				self::$template = $template->template;
+			}
+		}
+
+		$layout = new FileLayout($layoutId);
+		$layout->addIncludePath([
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'layouts' , 'plg_quantummanagcontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'layouts', 'plg_quantummanagcontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'layouts', 'plg_content_quantummanagercontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'plg_content_quantummanagercontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'plg_quantummanagcontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'plg_button_quantummanagerbutton']),
+		]);
+
+		$output = $layout->render();
+		return $output;
+	}
 
 	/**
 	 *
