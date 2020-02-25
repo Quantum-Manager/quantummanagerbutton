@@ -113,48 +113,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                header = header.build();
-                body = body.build();
-                QuantumUtils.modal(fm, header, body, '', 'modalcontentinsert');
+                if(formFields[fm.data.scope] !== undefined) {
+                    fields = formFields[fm.data.scope]['fieldsform'];
+                    titleScope = formFields[fm.data.scope]['title'];
+                } else {
+                    fields = {};
+                    titleScope = QuantumwindowLang.defaultScope;
+                }
 
-                let buildFields = function() {
-                    body.innerHTML = '';
-                    let enablesFields = [];
-                    let select = header.querySelector('.select-file-for-insert');
+                let fieldsBody;
 
-                    if (templateList[fm.data.scope] !== undefined) {
-                        for (let key in templateList[fm.data.scope].templatelist) {
-                            if(select.value === templateList[fm.data.scope].templatelist[key].name) {
-                                enablesFields = templateList[fm.data.scope].templatelist[key].enablefields;
-                                break;
-                            }
+                for(let i=0;i<files.length;i++) {
+                    let file = files[i].getAttribute('data-file');
+                    let exs = files[i].getAttribute('data-exs');
+                    let name = files[i].getAttribute('data-name');
+                    let preview = '';
 
-                        }
-                    }
-
-                    if(formFields[fm.data.scope] !== undefined) {
-                        fields = formFields[fm.data.scope]['fieldsform'];
-                        titleScope = formFields[fm.data.scope]['title'];
+                    if(files[i].getAttribute('data-filep') === null || files[i].getAttribute('data-filep') === '') {
+                        preview = fm.Quantumviewfiles.generateIconFile(exs);
                     } else {
-                        fields = {};
-                        titleScope = QuantumwindowLang.defaultScope;
+                        preview = QuantumUtils.createElement('img', {'class': 'table-file-for-insert-preview-file', 'src': files[i].getAttribute('data-filep') + '&path=' + encodeURIComponent(fm.data.path)}).build();
                     }
 
-                    let fieldsBody;
-
-                    for(let i=0;i<files.length;i++) {
-                        let file = files[i].getAttribute('data-file');
-                        let exs = files[i].getAttribute('data-exs');
-                        let name = files[i].getAttribute('data-name');
-                        let preview = '';
-
-                        if(files[i].getAttribute('data-filep') === null || files[i].getAttribute('data-filep') === '') {
-                            preview = fm.Quantumviewfiles.generateIconFile(exs);
-                        } else {
-                            preview = QuantumUtils.createElement('img', {'class': 'table-file-for-insert-preview-file', 'src': files[i].getAttribute('data-filep') + '&path=' + encodeURIComponent(fm.data.path)}).build();
-                        }
-
-                        fieldsBody = QuantumUtils.createElement('div', {'class': 'table-file-for-insert-tr', 'data-file': file})
+                    fieldsBody = QuantumUtils.createElement('div', {'class': 'table-file-for-insert-tr', 'data-file': file})
                         .addChild('div', {'class': 'handle-wrap'})
                         .add('div', {'class': 'quantummanager-icon quantummanager-icon-switch-vertical handle'})
                         .getParent()
@@ -163,97 +144,118 @@ document.addEventListener('DOMContentLoaded', function () {
                         .getParent()
                         .addChild('div', {'class': 'table-file-for-insert-fields'});
 
+                    if(Object.keys(fields).length > 0) {
+                        for(let i in fields) {
 
-                        if(Object.keys(fields).length > 0) {
-                            for(let i in fields) {
-
-                                if(enablesFields.indexOf(fields[i].nametemplate) === -1)
-                                {
-                                    continue;
-                                }
-
-                                if([
-                                    'text',
-                                    'number',
-                                    'color',
-                                    'email',
-                                    'url',
-                                    'date',
-                                    'datetime-local',
-                                    'time',
-                                ].indexOf(fields[i].type) !== -1)
-                                {
-                                    fieldsBody = fieldsBody.add('input', {
-                                        'data-default': fields[i].default,
-                                        'type': fields[i].type,
-                                        'name': '{' + fields[i].nametemplate + '}',
-                                        'value': '',
-                                        'placeholder': fields[i].name,
-                                    });
-                                }
-
-                                if(['list'].indexOf(fields[i].type) !== -1)
-                                {
-                                    fieldsBody = fieldsBody.addChild('select', {
-                                        'data-default': fields[i].default,
-                                        'type': fields[i].type,
-                                        'name': '{' + fields[i].nametemplate + '}',
-                                        'value': '',
-                                        'placeholder': fields[i].name,
-                                    });
-
-                                    if(typeof fields[i].forlist === 'string') {
-                                        fields[i].forlist = fields[i].forlist.split('\r');
-                                    }
-
-                                    for(let key in fields[i].forlist) {
-                                        fieldsBody = fieldsBody.add('option', {
-                                            'value': fields[i].forlist[key],
-                                        }, fields[i].forlist[key]);
-                                    }
-
-                                    fieldsBody = fieldsBody.getParent();
-                                }
-
+                            if([
+                                'text',
+                                'number',
+                                'color',
+                                'email',
+                                'url',
+                                'date',
+                                'datetime-local',
+                                'time',
+                            ].indexOf(fields[i].type) !== -1)
+                            {
+                                fieldsBody = fieldsBody.add('input', {
+                                    'data-default': fields[i].default,
+                                    'type': fields[i].type,
+                                    'name': '{' + fields[i].nametemplate + '}',
+                                    'value': '',
+                                    'placeholder': fields[i].name,
+                                });
                             }
-                        } else {
-                            fieldsBody = fieldsBody.add('input', {
-                                'data-default': QuantumwindowLang.defaultNameValue,
-                                'type': 'text',
-                                'name': '{name}',
-                                'value': '',
-                                'placeholder': QuantumwindowLang.defaultName,
-                            });
+
+                            if(['list'].indexOf(fields[i].type) !== -1)
+                            {
+                                fieldsBody = fieldsBody.addChild('select', {
+                                    'data-default': fields[i].default,
+                                    'type': fields[i].type,
+                                    'name': '{' + fields[i].nametemplate + '}',
+                                    'value': '',
+                                    'placeholder': fields[i].name,
+                                });
+
+                                if(typeof fields[i].forlist === 'string') {
+                                    fields[i].forlist = fields[i].forlist.split('\r');
+                                }
+
+                                for(let key in fields[i].forlist) {
+                                    fieldsBody = fieldsBody.add('option', {
+                                        'value': fields[i].forlist[key],
+                                    }, fields[i].forlist[key]);
+                                }
+
+                                fieldsBody = fieldsBody.getParent();
+                            }
+
                         }
-                        fieldsBody = fieldsBody.getParent();
-                        //fieldsBody = fieldsBody.getParent();
-                        body.appendChild(fieldsBody.build());
+                    } else {
+                        fieldsBody = fieldsBody.add('input', {
+                            'data-default': QuantumwindowLang.defaultNameValue,
+                            'type': 'text',
+                            'name': '{name}',
+                            'value': '',
+                            'placeholder': QuantumwindowLang.defaultName,
+                        });
+                    }
+                    fieldsBody = fieldsBody.getParent();
+                    //fieldsBody = fieldsBody.getParent();
+                }
+
+                header = header.build();
+                body = body.build();
+                if(fieldsBody !== undefined) {
+                    body.appendChild(fieldsBody.build());
+                }
+                QuantumUtils.modal(fm, header, body, '', 'modalcontentinsert');
+
+                new Sortable(body, {
+                    group: "name",
+                    sort: true,
+                    delay: 0,
+                    delayOnTouchOnly: false,
+                    touchStartThreshold: 0,
+                    disabled: false,
+                    store: null,
+                    animation: 150,
+                    easing: "cubic-bezier(1, 0, 0, 1)",
+                    handle: ".handle",
+                    preventOnFilter: true,
+                    draggable: ".table-file-for-insert-tr",
+                    dataIdAttr: 'data-id',
+                    swapThreshold: 1,
+                    invertedSwapThreshold: 1,
+                    direction: 'vertical',
+                });
+
+                let reBuildFields = function() {
+                    let select = header.querySelector('.select-file-for-insert');
+                    let inputAll = body.querySelectorAll('input, select');
+                    let enablesFields = [];
+                    if (templateList[fm.data.scope] !== undefined) {
+                        for (let key in templateList[fm.data.scope].templatelist) {
+                            if(select.value === templateList[fm.data.scope].templatelist[key].name) {
+                                enablesFields = templateList[fm.data.scope].templatelist[key].enablefields;
+                                break;
+                            }
+                        }
                     }
 
-                    new Sortable(body, {
-                        group: "name",
-                        sort: true,
-                        delay: 0,
-                        delayOnTouchOnly: false,
-                        touchStartThreshold: 0,
-                        disabled: false,
-                        store: null,
-                        animation: 150,
-                        easing: "cubic-bezier(1, 0, 0, 1)",
-                        handle: ".handle",
-                        preventOnFilter: true,
-                        draggable: ".table-file-for-insert-tr",
-                        dataIdAttr: 'data-id',
-                        swapThreshold: 1,
-                        invertedSwapThreshold: 1,
-                        direction: 'vertical',
-                    });
+                    for(let i=0;i<inputAll.length;i++) {
+                        if(enablesFields.indexOf(inputAll[i].name.replace(/[\{\}]/g, '')) !== -1) {
+                            inputAll[i].style.display = 'inline-block';
+                        } else {
+                            inputAll[i].style.display = 'none';
+                        }
+                    }
 
                 };
-                buildFields();
 
+                reBuildFields();
                 header.querySelector('.select-file-for-insert').addEventListener('change', function () {
-                    buildFields();
+                    reBuildFields();
                 });
 
             });
