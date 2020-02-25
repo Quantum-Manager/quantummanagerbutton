@@ -71,6 +71,7 @@ class QuantummanagerbuttonHelper
 		return $output;
 	}
 
+
 	/**
 	 *
 	 * @return array
@@ -192,6 +193,7 @@ class QuantummanagerbuttonHelper
 		$output = $layout->render();
 		return $output;
 	}
+
 
 	/**
 	 *
