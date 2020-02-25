@@ -67,7 +67,7 @@ class JFormFieldQuantummanagerscopesinsert extends JFormFieldSubform
 			$defaultFieldsform = '';
 
 			if (isset($defaultValues[$scope->id])) {
-				$defaultTemplate = $defaultValues[$scope->id]->template;
+				$defaultTemplateList = $defaultValues[$scope->id]->templatelist;
 				$defaultFieldsform = json_encode($defaultValues[$scope->id]->fieldsform);
 			}
 

@@ -276,7 +276,7 @@ class QuantummanagerbuttonHelper
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_VIDEOS'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => 'Аудио',
+						'templatename' => 'Видео',
 						'templatebefore' => '',
 						'template' => '<video src="{file}" autoplay>' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_VIDEOS_TEMPLATE_TEXT') . '</video>',
 						'templateafter' => '',
