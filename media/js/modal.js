@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         preview = QuantumUtils.createElement('img', {'class': 'table-file-for-insert-preview-file', 'src': files[i].getAttribute('data-filep') + '&path=' + encodeURIComponent(fm.data.path)}).build();
                     }
 
-                    fieldsBody = QuantumUtils.createElement('div', {'class': 'table-file-for-insert-tr', 'data-file': file})
+                    body = body.addChild('div', {'class': 'table-file-for-insert-tr', 'data-file': file})
                         .addChild('div', {'class': 'handle-wrap'})
                         .add('div', {'class': 'quantummanager-icon quantummanager-icon-switch-vertical handle'})
                         .getParent()
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 'time',
                             ].indexOf(fields[i].type) !== -1)
                             {
-                                fieldsBody = fieldsBody.add('input', {
+                                body = body.add('input', {
                                     'data-default': fields[i].default,
                                     'type': fields[i].type,
                                     'name': '{' + fields[i].nametemplate + '}',
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             if(['list'].indexOf(fields[i].type) !== -1)
                             {
-                                fieldsBody = fieldsBody.addChild('select', {
+                                body = body.addChild('select', {
                                     'data-default': fields[i].default,
                                     'type': fields[i].type,
                                     'name': '{' + fields[i].nametemplate + '}',
@@ -182,17 +182,17 @@ document.addEventListener('DOMContentLoaded', function () {
                                 }
 
                                 for(let key in fields[i].forlist) {
-                                    fieldsBody = fieldsBody.add('option', {
+                                    body = body.add('option', {
                                         'value': fields[i].forlist[key],
                                     }, fields[i].forlist[key]);
                                 }
 
-                                fieldsBody = fieldsBody.getParent();
+                                body = body.getParent();
                             }
 
                         }
                     } else {
-                        fieldsBody = fieldsBody.add('input', {
+                        body = body.add('input', {
                             'data-default': QuantumwindowLang.defaultNameValue,
                             'type': 'text',
                             'name': '{name}',
@@ -200,15 +200,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             'placeholder': QuantumwindowLang.defaultName,
                         });
                     }
-                    fieldsBody = fieldsBody.getParent();
-                    //fieldsBody = fieldsBody.getParent();
+                    body = body.getParent();
+                    body = body.getParent();
                 }
 
                 header = header.build();
                 body = body.build();
-                if(fieldsBody !== undefined) {
-                    body.appendChild(fieldsBody.build());
-                }
                 QuantumUtils.modal(fm, header, body, '', 'modalcontentinsert');
 
                 new Sortable(body, {
@@ -273,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('btn-hide');
-            return;
         } else {
             fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.remove('btn-hide');
         }

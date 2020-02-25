@@ -154,7 +154,7 @@ HTMLHelper::_('script', 'plg_button_quantummanagerbutton/modal.js', [
 
     window.QuantumButtonPlugin = {
         templatelist: '<?php echo QuantummanagerHelper::escapeJsonString(json_encode($templatelistForContentPlugin)) ?>',
-        fields: '<?php echo QuantummanagerHelper::escapeJsonString(json_encode($fieldsForContentPlugin, JSON_FORCE_OBJECT)) ?>'
+        fields: '<?php echo QuantummanagerHelper::escapeJsonString(json_encode($fieldsForContentPlugin)) ?>'
     };
 
     window.QuantumwindowLang = {

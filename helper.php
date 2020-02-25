@@ -101,6 +101,8 @@ class QuantummanagerbuttonHelper
 
 		foreach ($scopes as $scope)
 		{
+			$scope = (array)$scope;
+
 			$templatelist = [];
 			$templatelistFromScope = $scope['templatelist'];
 			foreach ($templatelistFromScope as $keyTemplate => $template)
@@ -139,7 +141,6 @@ class QuantummanagerbuttonHelper
 
 			}
 
-			$scope = (array)$scope;
 			$output[$scope['id']] = [
 				'title' => $scope['title'],
 				'templatelist' => $templatelist
@@ -213,7 +214,7 @@ class QuantummanagerbuttonHelper
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_IMAGES'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => 'Изображение',
+						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_IMAGE'),
 						'templatebefore' => '',
 						'template' => '<img src="{file}" alt="{alt}" width="{width}" height="{height}" />',
 						'templateafter' => '',
@@ -245,7 +246,7 @@ class QuantummanagerbuttonHelper
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_DOCS'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => 'Ссылка',
+						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_DOC'),
 						'templatebefore' => '',
 						'template' => '<a href="{file}" target="_blank">{name}</a>',
 						'templateafter' => '',
@@ -265,7 +266,7 @@ class QuantummanagerbuttonHelper
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_MUSIC'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => 'Аудио',
+						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_AUDIO'),
 						'templatebefore' => '',
 						'template' => '<audio controls src="{file}"> ' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_MUSIC_TEMPLATE_TEXT') . '</audio>',
 						'templateafter' => '',
@@ -278,7 +279,7 @@ class QuantummanagerbuttonHelper
 				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_VIDEOS'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => 'Видео',
+						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_VIDEO'),
 						'templatebefore' => '',
 						'template' => '<video src="{file}" autoplay>' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_VIDEOS_TEMPLATE_TEXT') . '</video>',
 						'templateafter' => '',
