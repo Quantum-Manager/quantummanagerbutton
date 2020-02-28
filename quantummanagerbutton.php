@@ -175,10 +175,9 @@ EOT
 			$filetype = end($type);
 			$filesize = filesize(JPATH_ROOT . '/' . $file);
 			$scopesTemplate = $this->params->get('scopes', QuantummanagerbuttonHelper::defaultValues());
+			$variables = [];
 			$variablesParams = [];
 			$html = '';
-
-			$variables = array_merge($variables, $variablesParams);
 
 			$shortCode = false;
 			$template = '<a href="{file}" target="_blank">{name}</a>';
