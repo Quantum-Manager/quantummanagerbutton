@@ -105,6 +105,7 @@ class QuantummanagerbuttonHelper
 
 			$templatelist = [];
 			$templatelistFromScope = $scope['templatelist'];
+
 			foreach ($templatelistFromScope as $keyTemplate => $template)
 			{
 				$templateItem = '';

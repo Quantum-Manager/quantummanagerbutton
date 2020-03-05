@@ -278,6 +278,19 @@ EOT
 									$variablesFind = [];
 									$variablesReplace = [];
 
+									foreach ($variables as $key => $value)
+									{
+										$variablesFind[] = $key;
+										$variablesReplace[] = $value;
+									}
+
+									foreach ($variables as $key => $value)
+									{
+										$variables[$key] = str_replace($variablesFind, $variablesReplace, $value);
+									}
+
+									$variablesFind = [];
+									$variablesReplace = [];
 
 									foreach ($variables as $key => $value)
 									{
