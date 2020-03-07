@@ -46,12 +46,22 @@ class JFormFieldQuantummanagerscopesinsert extends JFormFieldSubform
 		$scopes = QuantummanagerHelper::getAllScope('all');
 		$defaultValues = QuantummanagerbuttonHelper::defaultValues();
 		$i = 0;
-		foreach ($scopes as $scope) {
+		foreach ($scopes as $scope)
+		{
+
+			if($scope->id === 'sessionroot')
+			{
+				continue;
+			}
+
 			$findValue = null;
 
-			if(is_array($currentValue) && count($currentValue) > 0) {
-				foreach ($currentValue as $value) {
-					if ($value['id'] === $scope->id) {
+			if(is_array($currentValue) && count($currentValue) > 0)
+			{
+				foreach ($currentValue as $value)
+				{
+					if ($value['id'] === $scope->id)
+					{
 						$findValue = $value;
 					}
 				}
@@ -59,14 +69,16 @@ class JFormFieldQuantummanagerscopesinsert extends JFormFieldSubform
 
 			$title = '';
 
-			if (substr_count($scope->title, 'COM_QUANTUMMANAGER')) {
+			if (substr_count($scope->title, 'COM_QUANTUMMANAGER'))
+			{
 				$title = Text::_($scope->title);
 			}
 
 			$defaultTemplateList = '';
 			$defaultFieldsform = '';
 
-			if (isset($defaultValues[$scope->id])) {
+			if (isset($defaultValues[$scope->id]))
+			{
 				$defaultTemplateList = $defaultValues[$scope->id]->templatelist;
 				$defaultFieldsform = json_encode($defaultValues[$scope->id]->fieldsform);
 			}
