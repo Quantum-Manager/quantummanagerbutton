@@ -106,6 +106,16 @@ class QuantummanagerbuttonHelper
 			$templatelist = [];
 			$templatelistFromScope = $scope['templatelist'];
 
+			if(!is_array($templatelistFromScope))
+			{
+				$templatelistFromScope = [
+					[
+						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_DEFAULT'),
+						'template' => '<a href="{file}" target="_blank">{name}</a>'
+					]
+				];
+			}
+
 			foreach ($templatelistFromScope as $keyTemplate => $template)
 			{
 				$templateItem = '';

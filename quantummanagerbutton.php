@@ -225,8 +225,8 @@ EOT
 								$variablesReplace[] = $value;
 							}
 
-							$html = str_replace($variablesFind, $variablesReplace, $template);
-							$html = preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $html);
+							$template = str_replace($variablesFind, $variablesReplace, $template);
+							$html .= preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $template);
 						}
 					}
 					else
