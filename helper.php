@@ -131,7 +131,7 @@ class QuantummanagerbuttonHelper
 
 				$enablefields = [];
 				$matches = [];
-				preg_match_all("#\{\{(.*?)\}\}#isu", $templateItem, $matches);
+				preg_match_all("#\{(.*?)\}#isu", $templateItem, $matches);
 
 				if(isset($matches[1]))
 				{
