@@ -240,7 +240,7 @@ EOT
 								$templateitems = '';
 								$templateafter = '';
 
-								if(preg_match("#^\{.*?\}$#isu", trim($templateList->templatebefore)))
+								if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->templatebefore)))
 								{
 									$templatebefore = '[before]' .$templateList->templatebefore . '[/before]';
 									$shortCode = true;
@@ -298,7 +298,7 @@ EOT
 										$variablesReplace[] = $value;
 									}
 
-									if(preg_match("#^\{.*?\}$#isu", trim($templateList->template)))
+									if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->template)))
 									{
 										$shortCode = true;
 										$variablesForTemplate[] = $variables;
@@ -317,7 +317,7 @@ EOT
 									$templateitems = '[item][variables]' . json_encode($variablesForTemplate) . '[/variables][template]' . $templateList->template . '[/template][/item]';
 								}
 
-								if(preg_match("#^\{.*?\}$#isu", trim($templateList->templateafter)))
+								if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->templateafter)))
 								{
 									$templateafter = '[after]' . $templateList->templateafter . '[/after]';
 									$shortCode = true;

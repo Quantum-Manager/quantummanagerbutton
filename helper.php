@@ -119,7 +119,7 @@ class QuantummanagerbuttonHelper
 			foreach ($templatelistFromScope as $keyTemplate => $template)
 			{
 				$templateItem = '';
-				if(preg_match("#^\{.*?\}$#isu", trim($template['template'])))
+				if(preg_match("#^\{\{.*?\}\}$#isu", trim($template['template'])))
 				{
 					$layoutId = str_replace(['{', '}'], '', $template['template']);
 					$templateItem = self::renderLayout($layoutId);
@@ -131,7 +131,7 @@ class QuantummanagerbuttonHelper
 
 				$enablefields = [];
 				$matches = [];
-				preg_match_all("#\{(.*?)\}#isu", $templateItem, $matches);
+				preg_match_all("#\{\{(.*?)\}\}#isu", $templateItem, $matches);
 
 				if(isset($matches[1]))
 				{
