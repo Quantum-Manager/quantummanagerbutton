@@ -233,6 +233,7 @@ EOT
 					{
 						foreach ($scopesTemplateCurrent->templatelist as $templateList)
 						{
+                            $templateList = (object)$templateList;
 							if(isset($params['template']) && $templateList->templatename === $params['template'])
 							{
 								//собираем по выбранному шаблону
