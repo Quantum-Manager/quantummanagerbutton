@@ -240,6 +240,7 @@ EOT
 								$templatebefore = '';
 								$templateitems = '';
 								$templateafter = '';
+                                $shortCode = false;
 
 								if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->templatebefore)))
 								{
@@ -299,7 +300,7 @@ EOT
 										$variablesReplace[] = $value;
 									}
 
-									if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->template)))
+									if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->template)) || $shortCode)
 									{
 										$shortCode = true;
 										$variablesForTemplate[] = $variables;
