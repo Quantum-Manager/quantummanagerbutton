@@ -7,7 +7,7 @@
 	<license>https://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>cymbal@delo-design.ru</authorEmail>
 	<authorUrl>https://www.norrnext.com</authorUrl>
-	<version>1.5</version>
+	<version>1.0</version>
 	<description>PLG_BUTTON_QUANTUMMANAGERBUTTON_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<languages folder="language">
