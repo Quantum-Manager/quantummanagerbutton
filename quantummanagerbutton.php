@@ -196,7 +196,7 @@ EOT
 							$name = explode('/', $file);
 							$filename = end($name);
 							$type = explode('.', $file);
-							$filetype = end($type);
+							$filetype = mb_strtolower(end($type));
 							$filesize = filesize(JPATH_ROOT . '/' . $file);
 
 							$variables = [
@@ -206,6 +206,15 @@ EOT
 								'{size}' => QuantummanagerHelper::formatFileSize($filesize),
 							];
 
+							if(file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
+                            {
+                                if(in_array($filetype, ['jpg', 'jpeg', 'png']))
+                                {
+                                    list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
+                                    $variables['{imagewidth}'] = $width;
+                                    $variables['{imageheight}'] = $height;
+                                }
+                            }
 
 							foreach ($item['fields'] as $key => $value)
 							{
@@ -268,6 +277,16 @@ EOT
 										'{type}' => $filetype,
 										'{size}' => QuantummanagerHelper::formatFileSize($filesize),
 									];
+
+                                    if(file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
+                                    {
+                                        if(in_array($filetype, ['jpg', 'jpeg', 'png']))
+                                        {
+                                            list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
+                                            $variables['{imagewidth}'] = $width;
+                                            $variables['{imageheight}'] = $height;
+                                        }
+                                    }
 
 									foreach ($item['fields'] as $key => $value)
 									{
