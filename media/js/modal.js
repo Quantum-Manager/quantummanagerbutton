@@ -206,7 +206,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 header = header.build();
                 body = body.build();
-                QuantumUtils.modal(fm, header, body, '', 'modalcontentinsert');
+                QuantumUtils.modal({
+                        'fm': fm,
+                        'classForModal': 'modalcontentinsert',
+                        'header': header,
+                        'body': body
+                    });
 
                 new Sortable(body, {
                     group: "name",
