@@ -153,6 +153,127 @@
 
 					</form>
 				</field>
+
+				<field
+						name="customscopes"
+						type="quantummanagerscopesinsert"
+						label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_CUSTOM"
+						required="true"
+						buttons=" "
+						multiple="true">
+					<form>
+						<field
+								name="titleLabel"
+								type="text"
+								default=""
+								label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TITLE"
+						/>
+
+						<field
+								name="id"
+								type="text"
+								default=""
+								label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_ID"
+						/>
+
+						<field
+								name="title"
+								type="text"
+								default=""
+								label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TITLE"
+						/>
+
+						<field
+								name="fieldsform"
+								type="subform"
+								label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM"
+								required="true"
+								multiple="true">
+							<form>
+								<field
+										name="nametemplate"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_NAMETEMPLATE"
+								/>
+								<field
+										name="name"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_NAME"
+								/>
+								<field
+										name="default"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_DEFAULT"
+								/>
+								<field
+										name="type"
+										type="list"
+										default="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_TYPE">
+									<option value="text">Text</option>
+									<option value="number">Number</option>
+									<option value="list">List</option>
+									<option value="color">Color</option>
+									<option value="email">Email</option>
+									<option value="url">Url</option>
+									<option value="date">Date</option>
+									<option value="time">Time</option>
+								</field>
+
+								<field
+										name="forlist"
+										type="textarea"
+										default=""
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_FIELDSFORM_FORLIST"
+										showon="type:list"
+								/>
+							</form>
+						</field>
+
+						<field
+								name="templatelist"
+								type="subform"
+								label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_LIST"
+								required="true"
+								multiple="true">
+							<form>
+								<field
+										name="templatename"
+										type="text"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_NAME"
+								/>
+
+								<field
+										name="templatebefore"
+										type="textarea"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_BEFORE"
+										rows="10"
+										cols="10"
+										filter="raw"
+								/>
+
+								<field
+										name="template"
+										type="textarea"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_ITEM"
+										rows="10"
+										cols="10"
+										filter="raw"
+								/>
+
+								<field
+										name="templateafter"
+										type="textarea"
+										label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_TEMPLATE_AFTER"
+										rows="10"
+										cols="10"
+										filter="raw"
+								/>
+							</form>
+						</field>
+
+					</form>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

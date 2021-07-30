@@ -175,12 +175,18 @@ EOT
 			$filetype = end($type);
 			$filesize = filesize(JPATH_ROOT . '/' . $file);
 			$scopesTemplate = $this->params->get('scopes', QuantummanagerbuttonHelper::defaultValues());
+			$scopesCustom = $this->params->get('customscopes', []);
 			$variables = [];
 			$variablesParams = [];
 			$html = '';
 
 			$shortCode = false;
 			$template = '<a href="{file}" target="_blank">{name}</a>';
+
+			foreach($scopesCustom as $scopeCustom)
+			{
+				$scopesTemplate[count($scopesTemplate)] = $scopeCustom;
+			}
 
 			foreach ($scopesTemplate as $scopesTemplateCurrent)
 			{

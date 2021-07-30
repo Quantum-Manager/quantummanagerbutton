@@ -40,30 +40,40 @@ class QuantummanagerbuttonHelper
 	public static function getFieldsForScopes()
 	{
 
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true)
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true)
 			->select($db->quoteName(array('params')))
 			->from('#__extensions')
-			->where( 'element=' . $db->quote('quantummanagerbutton'));
-		$extension = $db->setQuery( $query )->loadObject();
-		$params = json_decode($extension->params, JSON_OBJECT_AS_ARRAY);
+			->where('element=' . $db->quote('quantummanagerbutton'));
+		$extension = $db->setQuery($query)->loadObject();
+		$params    = json_decode($extension->params, JSON_OBJECT_AS_ARRAY);
 
-		if(!isset($params['scopes']) || empty($params['scopes']) || count((array)$params['scopes']) === 0)
+		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
 		{
 			$scopes = self::defaultValues();
 		}
 		else
 		{
-			$scopes = $params['scopes'];
+			$scopes        = $params['scopes'];
+			$scopes_custom = $params['customscopes'] ?? [];
 		}
 
 		$output = [];
 
 		foreach ($scopes as $scope)
 		{
-			$scope = (array)$scope;
+			$scope                = (array) $scope;
 			$output[$scope['id']] = [
-				'title' => $scope['title'],
+				'title'      => $scope['title'],
+				'fieldsform' => $scope['fieldsform']
+			];
+		}
+
+		foreach ($scopes_custom as $scope)
+		{
+			$scope                = (array) $scope;
+			$output[$scope['id']] = [
+				'title'      => $scope['title'],
 				'fieldsform' => $scope['fieldsform']
 			];
 		}
@@ -80,15 +90,15 @@ class QuantummanagerbuttonHelper
 	 */
 	public static function getTemplateListForScopes()
 	{
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true)
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true)
 			->select($db->quoteName(array('params')))
 			->from('#__extensions')
-			->where( 'element=' . $db->quote('quantummanagerbutton'));
-		$extension = $db->setQuery( $query )->loadObject();
-		$params = json_decode($extension->params, JSON_OBJECT_AS_ARRAY);
+			->where('element=' . $db->quote('quantummanagerbutton'));
+		$extension = $db->setQuery($query)->loadObject();
+		$params    = json_decode($extension->params, JSON_OBJECT_AS_ARRAY);
 
-		if(!isset($params['scopes']) || empty($params['scopes']) || count((array)$params['scopes']) === 0)
+		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
 		{
 			$scopes = self::defaultValues();
 		}
@@ -101,17 +111,17 @@ class QuantummanagerbuttonHelper
 
 		foreach ($scopes as $scope)
 		{
-			$scope = (array)$scope;
+			$scope = (array) $scope;
 
-			$templatelist = [];
+			$templatelist          = [];
 			$templatelistFromScope = $scope['templatelist'];
 
-			if(!is_array($templatelistFromScope))
+			if (!is_array($templatelistFromScope))
 			{
 				$templatelistFromScope = [
 					[
 						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_DEFAULT'),
-						'template' => '<a href="{file}" target="_blank">{name}</a>'
+						'template'     => '<a href="{file}" target="_blank">{name}</a>'
 					]
 				];
 			}
@@ -119,9 +129,9 @@ class QuantummanagerbuttonHelper
 			foreach ($templatelistFromScope as $keyTemplate => $template)
 			{
 				$templateItem = '';
-				if(preg_match("#^\{\{.*?\}\}$#isu", trim($template['template'])))
+				if (preg_match("#^\{\{.*?\}\}$#isu", trim($template['template'])))
 				{
-					$layoutId = str_replace(['{', '}'], '', $template['template']);
+					$layoutId     = str_replace(['{', '}'], '', $template['template']);
 					$templateItem = self::renderLayout($layoutId);
 				}
 				else
@@ -130,14 +140,14 @@ class QuantummanagerbuttonHelper
 				}
 
 				$enablefields = [];
-				$matches = [];
+				$matches      = [];
 				preg_match_all("#\{(.*?)\}#isu", $templateItem, $matches);
 
-				if(isset($matches[1]))
+				if (isset($matches[1]))
 				{
 					foreach ($matches[1] as $findField)
 					{
-						if(!in_array($findField, $enablefields))
+						if (!in_array($findField, $enablefields))
 						{
 							$enablefields[] = $findField;
 						}
@@ -146,14 +156,14 @@ class QuantummanagerbuttonHelper
 				}
 
 				$templatelist[] = [
-					'name' => $template['templatename'],
+					'name'         => $template['templatename'],
 					'enablefields' => $enablefields,
 				];
 
 			}
 
 			$output[$scope['id']] = [
-				'title' => $scope['title'],
+				'title'        => $scope['title'],
 				'templatelist' => $templatelist
 			];
 		}
@@ -172,21 +182,21 @@ class QuantummanagerbuttonHelper
 	 */
 	public static function renderLayout($layoutId)
 	{
-		$app = Factory::getApplication();
+		$app      = Factory::getApplication();
 		$template = $app->getTemplate();
 
-		if(empty(self::$template))
+		if (empty(self::$template))
 		{
-			$db = Factory::getDbo();
-			$query = $db->getQuery( true );
-			$query->select( 'template' )
-				->from( '#__template_styles as e' )
-				->where( 'e.client_id = 0')
-				->where( 'e.home = 1')
+			$db    = Factory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('template')
+				->from('#__template_styles as e')
+				->where('e.client_id = 0')
+				->where('e.home = 1')
 				->setLimit(1);
 			$db->setQuery($query);
 			$template = $db->loadObject();
-			if(isset($template->template))
+			if (isset($template->template))
 			{
 				self::$template = $template->template;
 			}
@@ -194,15 +204,16 @@ class QuantummanagerbuttonHelper
 
 		$layout = new FileLayout($layoutId);
 		$layout->addIncludePath([
-			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'layouts' , 'plg_quantummanagcontent']),
-			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'layouts', 'plg_quantummanagcontent']),
-			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'layouts', 'plg_content_quantummanagercontent']),
-			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'plg_content_quantummanagercontent']),
-			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'plg_quantummanagcontent']),
-			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html' , 'plg_button_quantummanagerbutton']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'layouts', 'plg_quantummanagcontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html', 'layouts', 'plg_quantummanagcontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html', 'layouts', 'plg_content_quantummanagercontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html', 'plg_content_quantummanagercontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html', 'plg_quantummanagcontent']),
+			JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['templates', self::$template, 'html', 'plg_button_quantummanagerbutton']),
 		]);
 
 		$output = $layout->render();
+
 		return $output;
 	}
 
@@ -220,83 +231,83 @@ class QuantummanagerbuttonHelper
 		$lang->load('com_quantummanager', JPATH_ROOT . '/administrator/components/com_quantummanager');
 
 		return [
-			'images' => (object)[
-				'id' => 'images',
-				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_IMAGES'),
+			'images' => (object) [
+				'id'           => 'images',
+				'title'        => Text::_('COM_QUANTUMMANAGER_SCOPE_IMAGES'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_IMAGE'),
+						'templatename'   => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_IMAGE'),
 						'templatebefore' => '',
-						'template' => '<img src="{file}" alt="{alt}" width="{width}" height="{height}" />',
-						'templateafter' => '',
+						'template'       => '<img src="{file}" alt="{alt}" width="{width}" height="{height}" />',
+						'templateafter'  => '',
 					]
 				],
-				'fieldsform' => [
+				'fieldsform'   => [
 					'fieldsform0' => [
 						'nametemplate' => 'width',
-						'name' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_WIDTH_NAME'),
-						'default' => '',
-						'type' => 'number',
+						'name'         => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_WIDTH_NAME'),
+						'default'      => '',
+						'type'         => 'number',
 					],
 					'fieldsform1' => [
 						'nametemplate' => 'height',
-						'name' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_HEIGHT_NAME'),
-						'default' => '',
-						'type' => 'number',
+						'name'         => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_HEIGHT_NAME'),
+						'default'      => '',
+						'type'         => 'number',
 					],
 					'fieldsform3' => [
 						'nametemplate' => 'alt',
-						'name' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_ALT_NAME'),
-						'default' => '',
-						'type' => 'text',
+						'name'         => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_ALT_NAME'),
+						'default'      => '',
+						'type'         => 'text',
 					]
 				]
 			],
-			'docs' => (object)[
-				'id' => 'docs',
-				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_DOCS'),
+			'docs'   => (object) [
+				'id'           => 'docs',
+				'title'        => Text::_('COM_QUANTUMMANAGER_SCOPE_DOCS'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_DOC'),
+						'templatename'   => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_DOC'),
 						'templatebefore' => '',
-						'template' => '<a href="{file}" target="_blank">{name}</a>',
-						'templateafter' => '',
+						'template'       => '<a href="{file}" target="_blank">{name}</a>',
+						'templateafter'  => '',
 					]
 				],
-				'fieldsform' => [
+				'fieldsform'   => [
 					'fieldsform0' => [
 						'nametemplate' => 'name',
-						'name' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_DOCS_FIELDSFORM_NAME_NAME'),
-						'default' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_DEFAULT_NAME'),
-						'type' => 'text',
+						'name'         => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_DOCS_FIELDSFORM_NAME_NAME'),
+						'default'      => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_DEFAULT_NAME'),
+						'type'         => 'text',
 					],
 				]
 			],
-			'music' => (object)[
-				'id' => 'music',
-				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_MUSIC'),
+			'music'  => (object) [
+				'id'           => 'music',
+				'title'        => Text::_('COM_QUANTUMMANAGER_SCOPE_MUSIC'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_AUDIO'),
+						'templatename'   => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_AUDIO'),
 						'templatebefore' => '',
-						'template' => '<audio controls src="{file}"> ' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_MUSIC_TEMPLATE_TEXT') . '</audio>',
-						'templateafter' => '',
+						'template'       => '<audio controls src="{file}"> ' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_MUSIC_TEMPLATE_TEXT') . '</audio>',
+						'templateafter'  => '',
 					]
 				],
-				'fieldsform' => '',
+				'fieldsform'   => '',
 			],
-			'videos' => (object)[
-				'id' => 'videos',
-				'title' => Text::_('COM_QUANTUMMANAGER_SCOPE_VIDEOS'),
+			'videos' => (object) [
+				'id'           => 'videos',
+				'title'        => Text::_('COM_QUANTUMMANAGER_SCOPE_VIDEOS'),
 				'templatelist' => [
 					'templatelist0' => [
-						'templatename' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_VIDEO'),
+						'templatename'   => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_NAME_VIDEO'),
 						'templatebefore' => '',
-						'template' => '<video src="{file}" autoplay>' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_VIDEOS_TEMPLATE_TEXT') . '</video>',
-						'templateafter' => '',
+						'template'       => '<video src="{file}" autoplay>' . Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_VIDEOS_TEMPLATE_TEXT') . '</video>',
+						'templateafter'  => '',
 					]
 				],
-				'fieldsform' => '',
+				'fieldsform'   => '',
 			]
 		];
 	}
