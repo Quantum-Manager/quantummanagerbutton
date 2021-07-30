@@ -156,10 +156,10 @@
 
 				<field
 						name="customscopes"
-						type="quantummanagerscopesinsert"
+						type="subform"
 						label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_CUSTOM"
 						required="true"
-						buttons=" "
+						layout="joomla.form.field.subform.default"
 						multiple="true">
 					<form>
 						<field
