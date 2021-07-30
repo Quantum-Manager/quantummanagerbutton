@@ -158,9 +158,8 @@
 						name="customscopes"
 						type="subform"
 						label="PLG_BUTTON_QUANTUMMANAGERBUTTON_CONFIG_SCOPES_CUSTOM"
-						required="true"
-						layout="joomla.form.field.subform.default"
-						multiple="true">
+						multiple="true"
+				>
 					<form>
 						<field
 								name="titleLabel"

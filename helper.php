@@ -51,6 +51,7 @@ class QuantummanagerbuttonHelper
 		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
 		{
 			$scopes = self::defaultValues();
+			$scopes_custom = [];
 		}
 		else
 		{
@@ -101,10 +102,17 @@ class QuantummanagerbuttonHelper
 		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
 		{
 			$scopes = self::defaultValues();
+			$scopes_custom = [];
 		}
 		else
 		{
 			$scopes = $params['scopes'];
+			$scopes_custom = $params['customscopes'] ?? [];
+		}
+
+		foreach ($scopes_custom as $scope)
+		{
+			$scopes[count($scopes)] = $scope;
 		}
 
 		$output = [];
