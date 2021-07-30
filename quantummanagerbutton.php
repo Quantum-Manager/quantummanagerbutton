@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -33,16 +32,16 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	 *
 	 * @param   string  $name  The name of the button to add.
 	 *
-	 * @throws  Exception
-	 *
 	 * @return  CMSObject  The button options as CMSObject.
+	 *
+	 * @throws  Exception
 	 *
 	 * @since   1.1.0
 	 */
 	public function onDisplay($name, $asset, $author)
 	{
 		$app = Factory::getApplication();
-		if(!$app->isClient('administrator'))
+		if (!$app->isClient('administrator'))
 		{
 			return;
 		}
@@ -127,10 +126,10 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 
 
 EOT
-);
+		);
+
 		return $button;
 	}
-
 
 
 	public function onAjaxQuantummanagerbutton()
@@ -139,18 +138,18 @@ EOT
 		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
 		JLoader::register('QuantummanagerbuttonHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
 
-		$app = Factory::getApplication();
+		$app  = Factory::getApplication();
 		$data = $app->input->getArray();
 		$task = $app->input->get('plugin_task');
 		$html = '';
 
 		$app = Factory::getApplication();
-		if(!$app->isClient('administrator'))
+		if (!$app->isClient('administrator'))
 		{
 			return;
 		}
 
-		if($task === 'getmodal')
+		if ($task === 'getmodal')
 		{
 			QuantummanagerHelper::loadlang();
 			$layout = new FileLayout('default', JPATH_ROOT . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, [
@@ -159,68 +158,71 @@ EOT
 			echo $layout->render();
 		}
 
-		if($task === 'prepareforcontent')
+		if ($task === 'prepareforcontent')
 		{
-			if(!isset($data['params'], $data['scope']))
+			if (!isset($data['params'], $data['scope']))
 			{
 				$app->close();
 			}
 
-			$scope = $data['scope'];
-			$params = json_decode($data['params'], JSON_OBJECT_AS_ARRAY);
-			$file = QuantummanagerHelper::preparePath($data['path'], false, $scope, true);
-			$name = explode('/', $file);
-			$filename = end($name);
-			$type = explode('.', $file);
-			$filetype = end($type);
-			$filesize = filesize(JPATH_ROOT . '/' . $file);
-			$scopesTemplate = $this->params->get('scopes', QuantummanagerbuttonHelper::defaultValues());
-			$scopesCustom = $this->params->get('customscopes', []);
-			$variables = [];
+			$scope           = $data['scope'];
+			$params          = json_decode($data['params'], JSON_OBJECT_AS_ARRAY);
+			$file            = QuantummanagerHelper::preparePath($data['path'], false, $scope, true);
+			$name            = explode('/', $file);
+			$filename        = end($name);
+			$type            = explode('.', $file);
+			$filetype        = end($type);
+			$filesize        = filesize(JPATH_ROOT . '/' . $file);
+			$scopesTemplate  = $this->params->get('scopes', QuantummanagerbuttonHelper::defaultValues());
+			$scopesCustom    = $this->params->get('customscopes', []);
+			$variables       = [];
 			$variablesParams = [];
-			$html = '';
+			$html            = '';
 
 			$shortCode = false;
-			$template = '<a href="{file}" target="_blank">{name}</a>';
+			$template  = '<a href="{file}" target="_blank">{name}</a>';
 
-			foreach($scopesCustom as $scopeCustom)
+			foreach ($scopesCustom as $scopeCustom)
 			{
-				$scopesTemplate[count($scopesTemplate)] = $scopeCustom;
+				$nameTmp = 'scopes' . count($scopesTemplate);
+				$scopesTemplate->$nameTmp = $scopeCustom;
 			}
 
 			foreach ($scopesTemplate as $scopesTemplateCurrent)
 			{
 
-				if($scopesTemplateCurrent->id === $scope)
+				$scopesTemplateCurrent = (object) $scopesTemplateCurrent;
+
+				if ($scopesTemplateCurrent->id === $scope)
 				{
 
-					if(empty($scopesTemplateCurrent->templatelist))
+					if (empty($scopesTemplateCurrent->templatelist))
 					{
-						foreach($params['files'] as $item)
+						foreach ($params['files'] as $item)
 						{
-							$file = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
-							$name = explode('/', $file);
+							$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
+							$name     = explode('/', $file);
 							$filename = end($name);
-							$type = explode('.', $file);
+							$type     = explode('.', $file);
 							$filetype = mb_strtolower(end($type));
 							$filesize = filesize(JPATH_ROOT . '/' . $file);
 
 							$variables = [
-								'{file}' => $file,
+								'{file}'     => $file,
 								'{filename}' => $filename,
-								'{type}' => $filetype,
-								'{size}' => QuantummanagerHelper::formatFileSize($filesize),
+								'{type}'     => $filetype,
+								'{size}'     => QuantummanagerHelper::formatFileSize($filesize),
 							];
 
-							if(file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
-                            {
-                                if(in_array($filetype, ['jpg', 'jpeg', 'png']))
-                                {
-                                    list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
-                                    $variables['{imagewidth}'] = $width;
-                                    $variables['{imageheight}'] = $height;
-                                }
-                            }
+							if (file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
+							{
+								if (in_array($filetype, ['jpg', 'jpeg', 'png']))
+								{
+									list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
+									$variables['{imagewidth}']  = $width;
+									$variables['{imageheight}'] = $height;
+								}
+							}
 
 							foreach ($item['fields'] as $key => $value)
 							{
@@ -230,37 +232,37 @@ EOT
 								}
 							}
 
-							$template = '<a href="{file}" target="_blank">{name}</a>';
-							$variablesFind = [];
+							$template         = '<a href="{file}" target="_blank">{name}</a>';
+							$variablesFind    = [];
 							$variablesReplace = [];
 
 							foreach ($variables as $key => $value)
 							{
-								$variablesFind[] = $key;
+								$variablesFind[]    = $key;
 								$variablesReplace[] = $value;
 							}
 
 							$template = str_replace($variablesFind, $variablesReplace, $template);
-							$html .= preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $template);
+							$html     .= preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $template);
 						}
 					}
 					else
 					{
 						foreach ($scopesTemplateCurrent->templatelist as $templateList)
 						{
-                            $templateList = (object)$templateList;
-							if(isset($params['template']) && $templateList->templatename === $params['template'])
+							$templateList = (object) $templateList;
+							if (isset($params['template']) && $templateList->templatename === $params['template'])
 							{
 								//собираем по выбранному шаблону
 								$templatebefore = '';
-								$templateitems = '';
-								$templateafter = '';
-                                $shortCode = false;
+								$templateitems  = '';
+								$templateafter  = '';
+								$shortCode      = false;
 
-								if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->templatebefore)))
+								if (preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->templatebefore)))
 								{
-									$templatebefore = '[before]' .$templateList->templatebefore . '[/before]';
-									$shortCode = true;
+									$templatebefore = '[before]' . $templateList->templatebefore . '[/before]';
+									$shortCode      = true;
 								}
 								else
 								{
@@ -268,46 +270,46 @@ EOT
 								}
 
 								$variablesForTemplate = [];
-								foreach($params['files'] as $item)
+								foreach ($params['files'] as $item)
 								{
-									$file = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
-									$name = explode('/', $file);
+									$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
+									$name     = explode('/', $file);
 									$filename = end($name);
-									$type = explode('.', $file);
+									$type     = explode('.', $file);
 									$filetype = end($type);
 									$filesize = filesize(JPATH_ROOT . '/' . $file);
 
 									$variables = [
-										'{file}' => $file,
+										'{file}'     => $file,
 										'{filename}' => $filename,
-										'{type}' => $filetype,
-										'{size}' => QuantummanagerHelper::formatFileSize($filesize),
+										'{type}'     => $filetype,
+										'{size}'     => QuantummanagerHelper::formatFileSize($filesize),
 									];
 
-                                    if(file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
-                                    {
-                                        if(in_array($filetype, ['jpg', 'jpeg', 'png']))
-                                        {
-                                            list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
-                                            $variables['{imagewidth}'] = $width;
-                                            $variables['{imageheight}'] = $height;
-                                        }
-                                    }
+									if (file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
+									{
+										if (in_array($filetype, ['jpg', 'jpeg', 'png']))
+										{
+											list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
+											$variables['{imagewidth}']  = $width;
+											$variables['{imageheight}'] = $height;
+										}
+									}
 
 									foreach ($item['fields'] as $key => $value)
 									{
-										if(preg_match("#^\{.*?\}$#isu", $key))
+										if (preg_match("#^\{.*?\}$#isu", $key))
 										{
 											$variables[$key] = trim($value);
 										}
 									}
 
-									$variablesFind = [];
+									$variablesFind    = [];
 									$variablesReplace = [];
 
 									foreach ($variables as $key => $value)
 									{
-										$variablesFind[] = $key;
+										$variablesFind[]    = $key;
 										$variablesReplace[] = $value;
 									}
 
@@ -316,45 +318,45 @@ EOT
 										$variables[$key] = str_replace($variablesFind, $variablesReplace, $value);
 									}
 
-									$variablesFind = [];
+									$variablesFind    = [];
 									$variablesReplace = [];
 
 									foreach ($variables as $key => $value)
 									{
-										$variablesFind[] = $key;
+										$variablesFind[]    = $key;
 										$variablesReplace[] = $value;
 									}
 
-									if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->template)) || $shortCode)
+									if (preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->template)) || $shortCode)
 									{
-										$shortCode = true;
+										$shortCode              = true;
 										$variablesForTemplate[] = $variables;
 									}
 									else
 									{
-										$item = str_replace($variablesFind, $variablesReplace, $templateList->template);
-										$item = preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $item);
+										$item          = str_replace($variablesFind, $variablesReplace, $templateList->template);
+										$item          = preg_replace("#[\s\040]?[a-zA-Z0-9]{1,}\=\"\"#isu", '', $item);
 										$templateitems .= $item;
 									}
 
 								}
 
-								if($shortCode)
+								if ($shortCode)
 								{
 									$templateitems = '[item][variables]' . json_encode($variablesForTemplate) . '[/variables][template]' . $templateList->template . '[/template][/item]';
 								}
 
-								if(preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->templateafter)))
+								if (preg_match("#^\{\{.*?\}\}$#isu", trim($templateList->templateafter)))
 								{
 									$templateafter = '[after]' . $templateList->templateafter . '[/after]';
-									$shortCode = true;
+									$shortCode     = true;
 								}
 								else
 								{
 									$templateafter = $templateList->templateafter;
 								}
 
-								if($shortCode)
+								if ($shortCode)
 								{
 									$html = '[qmcontent]' . $templatebefore . $templateitems . $templateafter . '[/qmcontent]';
 								}
