@@ -40,8 +40,7 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	 */
 	public function onDisplay($name, $asset, $author)
 	{
-		$app = Factory::getApplication();
-		if (!$app->isClient('administrator'))
+		if (!$this->accessCheck())
 		{
 			return;
 		}
@@ -143,8 +142,7 @@ EOT
 		$task = $app->input->get('plugin_task');
 		$html = '';
 
-		$app = Factory::getApplication();
-		if (!$app->isClient('administrator'))
+		if (!$this->accessCheck())
 		{
 			return;
 		}
@@ -379,5 +377,30 @@ EOT
 
 	}
 
+
+	protected function accessCheck()
+	{
+
+		if ($this->app->isClient('administrator'))
+		{
+			return true;
+		}
+
+		// проверяем на включенность параметра
+		JLoader::register('QuantummanagerHelper', JPATH_ADMINISTRATOR . '/components/com_quantummanager/helpers/quantummanager.php');
+
+		if(!(int)QuantummanagerHelper::getParamsComponentValue('front', 0))
+		{
+			return false;
+		}
+
+		// проверяем что пользователь авторизован
+		if(Factory::getUser()->id === 0)
+		{
+			return false;
+		}
+
+		return true;
+	}
 
 }
