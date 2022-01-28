@@ -14,16 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
     let pathFile;
     let altFile;
 
-    buttonInsert.setAttribute('class', 'btn btn-primary');
+    buttonInsert.setAttribute('class', 'qm-btn qm-btn-primary');
     buttonInsert.setAttribute('type', 'button');
-    buttonCancel.setAttribute('class', 'btn');
+    buttonCancel.setAttribute('class', 'qm-btn');
     buttonCancel.setAttribute('modal', 'modal');
     buttonCancel.setAttribute('data-dismiss', 'modal');
     buttonCancel.setAttribute('type', 'button');
 
     setTimeout(function () {
         for(let i=0;i<QuantummanagerLists.length;i++) {
-            QuantummanagerLists[i].Quantumtoolbar.buttonAdd('insertFileEditor', 'center', 'file-actions', 'btn-insert btn-primary btn-hide', QuantumwindowLang.buttonInsert, 'quantummanager-icon-insert-inverse', {}, function (ev) {
+            QuantummanagerLists[i].Quantumtoolbar.buttonAdd('insertFileEditor', 'center', 'file-actions', 'qm-btn-insert qm-btn qm-btn-primary qm-btn-hide', QuantumwindowLang.buttonInsert, 'quantummanager-icon-insert-inverse', {}, function (ev) {
 
                 let fm = QuantummanagerLists[i];
 
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 header = header.getParent();
                 header = header.add('button', {
-                    'class':'btn btn-medium button-file-for-insert',
+                    'class':'qm-btn qm-btn-medium button-file-for-insert',
                     'events': [
                         ['click', function (ev) {
                             let wrap =  this.closest('.quatummanagermodal-wrap');
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 paramsForRequest.files.push(currentParams);
                             }
 
-                            QuantumUtils.ajaxPost(QuantumUtils.getFullUrl('/administrator/index.php?option=com_ajax&plugin=quantummanagerbutton&group=editors-xtd&format=raw&plugin.task=prepareforcontent&scope=' + fm.data.scope
+                            QuantumUtils.ajaxPost(QuantumUtils.getFullUrl('index.php?option=com_ajax&plugin=quantummanagerbutton&group=editors-xtd&format=raw&plugin.task=prepareforcontent&scope=' + fm.data.scope
                                 + '&path=' +  encodeURIComponent(fm.data.path) +
                                 '&v=' + QuantumUtils.randomInteger(111111, 999999)), {
                                     params:  JSON.stringify(paramsForRequest)
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 form.classList.remove('active');
             }
 
-            fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('btn-hide');
+            fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('qm-btn-hide');
         }
 
     });
@@ -289,9 +289,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 form.classList.remove('active');
             }
 
-            fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('btn-hide');
+            fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('qm-btn-hide');
         } else {
-            fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.remove('btn-hide');
+            fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.remove('qm-btn-hide');
         }
 
     });
@@ -306,11 +306,11 @@ document.addEventListener('DOMContentLoaded', function () {
         pathFile = fm.data.path + '/' + fm.Qantumupload.filesLists[0];
         name.split('.').pop();
         altFile = name[0];
-        fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.remove('btn-hide');
+        fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.remove('qm-btn-hide');
     });
 
     QuantumEventsDispatcher.add('reloadPaths', function (fm) {
-        fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('btn-hide');
+        fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('qm-btn-hide');
 
         let form = fm.Quantumviewfiles.element.querySelector('.modal-form-insert');
 
@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     QuantumEventsDispatcher.add('updatePath', function (fm) {
-        fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('btn-hide');
+        fm.Quantumtoolbar.buttonsList['insertFileEditor'].classList.add('qm-btn-hide');
 
         let form = fm.Quantumviewfiles.element.querySelector('.modal-form-insert');
         if(form !== null) {
