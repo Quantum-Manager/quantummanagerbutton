@@ -18,6 +18,16 @@ use Joomla\CMS\Session\Session;
 
 class PlgButtonQuantummanagerbutton extends CMSPlugin
 {
+
+	/**
+	 * Application object
+	 *
+	 * @var    CMSApplication
+	 * @since  1.0.0
+	 */
+	protected $app;
+
+
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -26,6 +36,7 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	 * @since   1.1.0
 	 */
 	protected $autoloadLanguage = true;
+
 
 	/**
 	 * Display the button.
