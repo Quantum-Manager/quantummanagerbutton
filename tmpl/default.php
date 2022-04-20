@@ -68,22 +68,28 @@ HTMLHelper::_('script', 'plg_button_quantummanagerbutton/modal.js', [
 		$buttonsBun = [];
 		$fields = [
 			'quantumtreecatalogs' => [
+				'label' => '',
 				'directory' => $folderRoot,
-				'position' => 'left',
-				'cssClass' => 'quantumtreecatalogs-module-muted'
-			],
-			'quantumupload' => [
-				'maxsize' => QuantummanagerHelper::getParamsComponentValue('maxsize', '10'),
-				'dropAreaHidden' => QuantummanagerHelper::getParamsComponentValue('dropareahidden', '0'),
-				'directory' => $folderRoot
+				'position' => 'container-left',
 			],
 			'quantumtoolbar' => [
-				'position' => 'top',
+				'label' => '',
+				'position' => 'container-center-top',
 				'buttons' => 'all',
 				'buttonsBun' => '',
-				'cssClass' => 'quantummanager-module-height-1-1 quantumtoolbar-module-muted quantumtoolbar-padding-horizontal',
+				'cssClass' => 'qm-padding-small-left qm-padding-small-right qm-padding-small-top qm-padding-small-bottom',
+			],
+			'quantumupload' => [
+				'label' => '',
+				'position' => 'container-center-top',
+				'maxsize' => QuantummanagerHelper::getParamsComponentValue('maxsize', '10'),
+				'dropAreaHidden' => QuantummanagerHelper::getParamsComponentValue('dropareahidden', '0'),
+				'directory' => $folderRoot,
+				'cssClass' => 'qm-padding-small-left qm-padding-small-right qm-padding-small-bottom',
 			],
 			'quantumviewfiles' => [
+				'label' => '',
+				'position' => 'container-center-center',
 				'directory' => $folderRoot,
 				'view' => 'list-grid',
 				'onlyfiles' => '0',
@@ -92,11 +98,9 @@ HTMLHelper::_('script', 'plg_button_quantummanagerbutton/modal.js', [
 				'metafile' => QuantummanagerHelper::getParamsComponentValue('metafile' , '1'),
 			],
 			'quantumcropperjs' => [
+				'label' => '',
 				'position' => 'bottom'
-			]
-			/*'quantumcodemirror' => [
-				'position' => 'center'
-			],*/
+			],
 		];
 
 		if((int)QuantummanagerHelper::getParamsComponentValue('unsplash', '1'))
@@ -105,6 +109,15 @@ HTMLHelper::_('script', 'plg_button_quantummanagerbutton/modal.js', [
 				'position' => 'bottom'
 			];
 		}
+
+		if ((int) QuantummanagerHelper::getParamsComponentValue('pexels', '1'))
+		{
+			$fields['quantumpexels'] = [
+				'label'    => '',
+				'position' => 'bottom'
+			];
+		}
+
 
 		if((int)QuantummanagerHelper::getParamsComponentValue('pixabay', '1'))
 		{
