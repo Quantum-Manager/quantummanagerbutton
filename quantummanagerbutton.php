@@ -216,6 +216,11 @@ EOT
 			$shortCode = false;
 			$template  = '<a href="{file}" target="_blank">{name}</a>';
 
+			if(is_array($scopesCustom))
+			{
+				$scopesCustom = [];
+			}
+
 			foreach ($scopesCustom as $scopeCustom)
 			{
 				$nameTmp                  = 'scopes' . count($scopesTemplate);
