@@ -84,15 +84,22 @@ document.addEventListener('DOMContentLoaded', function () {
                             ).done(function (response) {
 
                                 let editor = QuantumUtils.getUrlParameter('e_name');
+                                let isJoomla4 = QuantumUtils.getUrlParameter('isjoomla4');
                                 let tag = response;
 
-                                if (window.Joomla && Joomla.editors.instances.hasOwnProperty(editor)) {
-                                    Joomla.editors.instances[editor].replaceSelection(tag)
+                                if(isJoomla4 === '1') {
+                                    window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
+                                    window.parent.Joomla.Modal.getCurrent().close();
                                 } else {
-                                    window.parent.jInsertEditorText(tag, editor);
+                                    if (window.Joomla && Joomla.editors.instances.hasOwnProperty(editor)) {
+                                        Joomla.editors.instances[editor].replaceSelection(tag)
+                                    } else {
+                                        window.parent.jInsertEditorText(tag, editor);
+                                    }
+
+                                    window.parent.jModalClose();
                                 }
 
-                                window.parent.jModalClose();
 
                             });
 
@@ -132,7 +139,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     if(files[i].getAttribute('data-filep') === null || files[i].getAttribute('data-filep') === '') {
                         preview = fm.Quantumviewfiles.generateIconFile(exs);
                     } else {
-                        preview = QuantumUtils.createElement('img', {'class': 'table-file-for-insert-preview-file', 'src': files[i].getAttribute('data-filep') + '&path=' + encodeURIComponent(fm.data.path)}).build();
+                        let fileP = files[i].getAttribute('data-filep');
+
+                        if(fileP.indexOf('index.php') !== -1) {
+                            fileP += '&path=' + encodeURIComponent(fm.data.path)
+                        }
+
+                        preview = QuantumUtils.createElement('img', {'class': 'table-file-for-insert-preview-file', 'src': fileP}).build();
                     }
 
                     body = body.addChild('div', {'class': 'table-file-for-insert-tr', 'data-file': file})
