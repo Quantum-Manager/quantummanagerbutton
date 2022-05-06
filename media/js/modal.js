@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 header = header.getParent();
                 header = header.add('button', {
-                    'class':'qm-btn qm-btn-medium button-file-for-insert',
+                    'class':'qm-btn qm-btn-medium qm-btn-primary button-file-for-insert',
                     'events': [
                         ['click', function (ev) {
                             let wrap =  this.closest('.quatummanagermodal-wrap');

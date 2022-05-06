@@ -102,7 +102,6 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 				'modalWidth'      => '80',
 				'tinyPath'        => $link,
 				'confirmCallback' => 'Joomla.getImage(Joomla.selectedMediaFile, \'' . $name . '\', this)',
-				'confirmText'     => Text::_('PLG_IMAGE_BUTTON_INSERT'),
 			];
 
 			return $button;
