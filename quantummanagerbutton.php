@@ -73,7 +73,7 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 			return;
 		}
 
-		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/components/components/com_quantummanager/helpers/quantummanager.php');
+		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
 		$function = 'function(){}';
 		$isJoomla4 = QuantummanagerHelper::isJoomla4();
 
