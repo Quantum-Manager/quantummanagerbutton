@@ -103,13 +103,16 @@ HTMLHelper::_('script', 'plg_button_quantummanagerbutton/modal.js', [
 			],
 		];
 
+        /*
 		if((int)QuantummanagerHelper::getParamsComponentValue('unsplash', '1'))
 		{
 			$fields['quantumunsplash'] = [
 				'position' => 'bottom'
 			];
 		}
+        */
 
+        /*
 		if ((int) QuantummanagerHelper::getParamsComponentValue('pexels', '1'))
 		{
 			$fields['quantumpexels'] = [
@@ -117,14 +120,16 @@ HTMLHelper::_('script', 'plg_button_quantummanagerbutton/modal.js', [
 				'position' => 'bottom'
 			];
 		}
+       */
 
-
+        /*
 		if((int)QuantummanagerHelper::getParamsComponentValue('pixabay', '1'))
 		{
 			$fields['quantumpixabay'] = [
 				'position' => 'bottom'
 			];
 		}
+        */
 
 		$actions = QuantummanagerHelper::getActions();
 		if (!$actions->get('core.create'))
