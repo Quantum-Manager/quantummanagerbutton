@@ -56,23 +56,6 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 			return;
 		}
 
-		$user = Factory::getUser();
-
-		// Can create in any category (component permission) or at least in one category
-		$canCreateRecords = $user->authorise('core.create', 'com_content')
-			|| count($user->getAuthorisedCategories('com_content', 'core.create')) > 0;
-
-		// Instead of checking edit on all records, we can use **same** check as the form editing view
-		$values           = (array) Factory::getApplication()->getUserState('com_content.edit.article.id');
-		$isEditingRecords = count($values);
-
-		// This ACL check is probably a double-check (form view already performed checks)
-		$hasAccess = $canCreateRecords || $isEditingRecords;
-		if (!$hasAccess)
-		{
-			return;
-		}
-
 		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
 		$function = 'function(){}';
 		$isJoomla4 = QuantummanagerHelper::isJoomla4();
@@ -436,6 +419,13 @@ EOT
 
 		// проверяем что пользователь авторизован
 		if (Factory::getUser()->id === 0)
+		{
+			return false;
+		}
+
+		$actions = QuantummanagerHelper::getActions();
+
+		if (!$actions->get('core.create'))
 		{
 			return false;
 		}
