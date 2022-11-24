@@ -38,6 +38,21 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	protected $autoloadLanguage = true;
 
 
+	protected $install_quantummanager = false;
+
+
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		if(file_exists(JPATH_SITE . '/administrator/components/com_quantummanager/helpers/quantummanager.php'))
+		{
+			$this->install_quantummanager = true;
+		}
+
+	}
+
+
 	/**
 	 * Display the button.
 	 *
@@ -51,6 +66,12 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	 */
 	public function onDisplay($name, $asset, $author)
 	{
+
+		if(!$this->install_quantummanager)
+		{
+			return;
+		}
+
 		if (!$this->accessCheck())
 		{
 			return;
@@ -151,6 +172,11 @@ EOT
 
 	public function onAjaxQuantummanagerbutton()
 	{
+
+		if(!$this->install_quantummanager)
+		{
+			return;
+		}
 
 		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
 		JLoader::register('QuantummanagerbuttonHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
