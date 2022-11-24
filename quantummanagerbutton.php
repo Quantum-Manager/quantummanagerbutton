@@ -45,7 +45,7 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	{
 		parent::__construct($subject, $config);
 
-		if(file_exists(JPATH_SITE . '/administrator/components/com_quantummanager/helpers/quantummanager.php'))
+		if(file_exists(JPATH_SITE . '/administrator/components/com_quantummanager/quantummanager.php'))
 		{
 			$this->install_quantummanager = true;
 		}
