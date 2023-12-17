@@ -1,4 +1,5 @@
-<?php
+<?php namespace Joomla\Plugin\Button\QuantumManagerButton\Field;
+
 /**
  * @package    quantummanagerbutton
  * @author     Dmitry Tsymbal <cymbal@delo-design.ru>
@@ -9,21 +10,17 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\SubformField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Layout\FileLayout;
 
-
-JFormHelper::loadFieldClass('subform');
 
 /**
  * @package     ${NAMESPACE}
  *
- * @since version
+ * @since       version
  */
-class JFormFieldQuantummanagerscopesinsert extends JFormFieldSubform
+class QuantumManagerScopesInsertField extends SubformField
 {
 
 
@@ -38,25 +35,24 @@ class JFormFieldQuantummanagerscopesinsert extends JFormFieldSubform
 	 */
 	public function getInput()
 	{
-		$lang = Factory::getLanguage()->load('com_quantummanager', JPATH_ROOT . '/administrator/components/com_quantummanager');
-		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
-		JLoader::register('QuantummanagerbuttonHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
+		Factory::getLanguage()->load('com_quantummanager', JPATH_ROOT . '/administrator/components/com_quantummanager');
+
 		$scopesForInput = [];
-		$currentValue = $this->value;
-		$scopes = QuantummanagerHelper::getAllScope('all');
-		$defaultValues = QuantummanagerbuttonHelper::defaultValues();
-		$i = 0;
+		$currentValue   = $this->value;
+		$scopes         = QuantummanagerHelper::getAllScope('all');
+		$defaultValues  = QuantummanagerbuttonHelper::defaultValues();
+		$i              = 0;
 		foreach ($scopes as $scope)
 		{
 
-			if($scope->id === 'sessionroot')
+			if ($scope->id === 'sessionroot')
 			{
 				continue;
 			}
 
 			$findValue = null;
 
-			if(is_array($currentValue) && count($currentValue) > 0)
+			if (is_array($currentValue) && count($currentValue) > 0)
 			{
 				foreach ($currentValue as $value)
 				{
@@ -75,19 +71,19 @@ class JFormFieldQuantummanagerscopesinsert extends JFormFieldSubform
 			}
 
 			$defaultTemplateList = '';
-			$defaultFieldsform = '';
+			$defaultFieldsform   = '';
 
 			if (isset($defaultValues[$scope->id]))
 			{
 				$defaultTemplateList = $defaultValues[$scope->id]->templatelist;
-				$defaultFieldsform = json_encode($defaultValues[$scope->id]->fieldsform);
+				$defaultFieldsform   = json_encode($defaultValues[$scope->id]->fieldsform);
 			}
 
 			$scopesForInput['scopes' . $i] = [
-				'title' => $scope->title,
-				'titleLabel' => $scope->title,
-				'id' => $scope->id,
-				'fieldsform' => $findValue !== null ? $findValue['fieldsform'] : $defaultFieldsform,
+				'title'        => $scope->title,
+				'titleLabel'   => $scope->title,
+				'id'           => $scope->id,
+				'fieldsform'   => $findValue !== null ? $findValue['fieldsform'] : $defaultFieldsform,
 				'templatelist' => $findValue !== null ? $findValue['templatelist'] : $defaultTemplateList,
 			];
 
@@ -95,7 +91,8 @@ class JFormFieldQuantummanagerscopesinsert extends JFormFieldSubform
 		}
 
 		$this->value = $scopesForInput;
-		$html = parent::getInput();
+		$html        = parent::getInput();
+
 		return $html;
 	}
 

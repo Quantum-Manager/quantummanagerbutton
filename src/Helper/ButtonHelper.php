@@ -1,4 +1,4 @@
-<?php
+<?php namespace Joomla\Plugin\Button\QuantumManagerButton\Helper;
 
 /**
  * @package    quantummanagerbutton
@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 
-class QuantummanagerbuttonHelper
+class ButtonHelper
 {
 
 
@@ -50,7 +50,7 @@ class QuantummanagerbuttonHelper
 
 		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
 		{
-			$scopes = self::defaultValues();
+			$scopes        = self::defaultValues();
 			$scopes_custom = [];
 		}
 		else
@@ -101,12 +101,12 @@ class QuantummanagerbuttonHelper
 
 		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
 		{
-			$scopes = self::defaultValues();
+			$scopes        = self::defaultValues();
 			$scopes_custom = [];
 		}
 		else
 		{
-			$scopes = $params['scopes'];
+			$scopes        = $params['scopes'];
 			$scopes_custom = $params['customscopes'] ?? [];
 		}
 
@@ -190,8 +190,7 @@ class QuantummanagerbuttonHelper
 	 */
 	public static function renderLayout($layoutId)
 	{
-		$app      = Factory::getApplication();
-		$template = $app->getTemplate();
+		$app = Factory::getApplication();
 
 		if (empty(self::$template))
 		{

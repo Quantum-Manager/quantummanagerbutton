@@ -1,4 +1,4 @@
-<?php
+<?php namespace Joomla\Plugin\Button\QuantumManagerButton\Extension;
 /**
  * @package    quantummanagerbutton
  * @author     Dmitry Tsymbal <cymbal@delo-design.ru>
@@ -9,14 +9,18 @@
 
 defined('_JEXEC') or die;
 
+use Exception;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
+use Joomla\Component\QuantumManager\Administrator\Helper\QuantummanagerHelper;
+use Joomla\Plugin\Button\QuantumManagerButton\Helper\ButtonHelper;
 
-class PlgButtonQuantummanagerbutton extends CMSPlugin
+class QuantumManagerButton extends CMSPlugin
 {
 
 	/**
@@ -27,7 +31,6 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	 */
 	protected $app;
 
-
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -37,21 +40,18 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	 */
 	protected $autoloadLanguage = true;
 
-
 	protected $install_quantummanager = false;
-
 
 	public function __construct(&$subject, $config = array())
 	{
 		parent::__construct($subject, $config);
 
-		if(file_exists(JPATH_SITE . '/administrator/components/com_quantummanager/quantummanager.php'))
+		if (file_exists(JPATH_SITE . '/administrator/components/com_quantummanager/services/provider.php'))
 		{
 			$this->install_quantummanager = true;
 		}
 
 	}
-
 
 	/**
 	 * Display the button.
@@ -67,7 +67,7 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 	public function onDisplay($name, $asset, $author)
 	{
 
-		if(!$this->install_quantummanager)
+		if (!$this->install_quantummanager)
 		{
 			return;
 		}
@@ -77,114 +77,46 @@ class PlgButtonQuantummanagerbutton extends CMSPlugin
 			return;
 		}
 
-		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
 		$function = 'function(){}';
-		$isJoomla4 = QuantummanagerHelper::isJoomla4();
+		$link     = 'index.php?option=com_ajax&amp;plugin=quantummanagerbutton&amp;group=editors-xtd&amp;format=html&amp;tmpl=component&amp;plugin.task=getmodal&amp;e_name=' . $name . '&amp;asset=com_content&amp;author='
+			. Session::getFormToken() . '=1&amp;function=' . $function;
 
-		$link = 'index.php?option=com_ajax&amp;plugin=quantummanagerbutton&amp;group=editors-xtd&amp;format=html&amp;tmpl=component&amp;plugin.task=getmodal&amp;e_name=' . $name . '&amp;asset=com_content&amp;author='
-			. Session::getFormToken() . '=1&amp;function=' . $function . '&amp;isjoomla4=' . ($isJoomla4 ? '1' : '0');
-
-		$button        = new CMSObject();
-		$button->modal = true;
-		$button->class = 'btn';
-		$button->link  = $link;
-		$button->text  = Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_BUTTON');
-
-		if ($isJoomla4)
-		{
-			$button->name    = $this->_type . '_' . $this->_name;
-			$button->icon    = 'pictures';
-			$button->iconSVG = '<svg width="24" height="24" viewBox="0 0 512 512"><path d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48'
-				. ' 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 336H54a6 6 0 0 1-6-6V118a6 6 0 0 1 6-6h404a6 6'
-				. ' 0 0 1 6 6v276a6 6 0 0 1-6 6zM128 152c-22.091 0-40 17.909-40 40s17.909 40 40 40 40-17.909 40-40-17.909-40-40-40'
-				. 'zM96 352h320v-80l-87.515-87.515c-4.686-4.686-12.284-4.686-16.971 0L192 304l-39.515-39.515c-4.686-4.686-12.284-4'
-				. '.686-16.971 0L96 304v48z"></path></svg>';
-			$button->options = [
-				'height'          => '400px',
-				'width'           => '800px',
-				'bodyHeight'      => '70',
-				'modalWidth'      => '80',
-				'tinyPath'        => $link,
-				'confirmCallback' => 'Joomla.getImage(Joomla.selectedMediaFile, \'' . $name . '\', this)',
-			];
-
-			return $button;
-		}
-
-		$button->name    = 'file-add';
-		$button->options = "{handler: 'iframe', size: {x: 1450, y: 700}, classWindow: 'quantummanager-modal-sbox-window'}";
-
-		$label = Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_BUTTON');
-
-		Factory::getDocument()->addStyleDeclaration(<<<EOT
-@media screen and (max-width: 1540px) {
-	.mce-window[aria-label="{$label}"] {
-		left: 2% !important;
-		right: 0 !important;
-		width: 95% !important;
-	}
-	
-	.mce-window[aria-label="{$label}"] .mce-reset
-	{
-		width: 100% !important;
-		height: 100% !important;
-	}
-	
-	.mce-window[aria-label="{$label}"] .mce-window-body {
-		width: 100% !important;
-		height: calc(100% - 96px) !important;
-	}
-	
-	.mce-window[aria-label="{$label}"] .mce-foot {
-		width: 100% !important;
-	}
-	
-	.mce-window[aria-label="{$label}"] .mce-foot .mce-container-body {
-		width: 100% !important;
-	}
-	
-	.mce-window[aria-label="{$label}"] .mce-foot .mce-container-body .mce-widget {
-		left: auto !important;
-		right: 18px !important;
-	}
-}
-
-@media screen and (max-height: 700px) {
-
-	.mce-window[aria-label="{$label}"] {
-		top: 2% !important;
-		height: 95% !important;
-	}
-		
-	.mce-window[aria-label="{$label}"] .mce-window-body {
-		height: calc(100% - 96px) !important;
-	}
-			
-}
-
-
-EOT
-		);
+		$button          = new CMSObject();
+		$button->modal   = true;
+		$button->class   = 'btn';
+		$button->link    = $link;
+		$button->text    = Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_BUTTON');
+		$button->name    = $this->_type . '_' . $this->_name;
+		$button->icon    = 'pictures';
+		$button->iconSVG = '<svg width="24" height="24" viewBox="0 0 512 512"><path d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48'
+			. ' 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 336H54a6 6 0 0 1-6-6V118a6 6 0 0 1 6-6h404a6 6'
+			. ' 0 0 1 6 6v276a6 6 0 0 1-6 6zM128 152c-22.091 0-40 17.909-40 40s17.909 40 40 40 40-17.909 40-40-17.909-40-40-40'
+			. 'zM96 352h320v-80l-87.515-87.515c-4.686-4.686-12.284-4.686-16.971 0L192 304l-39.515-39.515c-4.686-4.686-12.284-4'
+			. '.686-16.971 0L96 304v48z"></path></svg>';
+		$button->options = [
+			'height'          => '400px',
+			'width'           => '800px',
+			'bodyHeight'      => '70',
+			'modalWidth'      => '80',
+			'tinyPath'        => $link,
+			'confirmCallback' => 'Joomla.getImage(Joomla.selectedMediaFile, \'' . $name . '\', this)',
+		];
 
 		return $button;
 	}
 
-
 	public function onAjaxQuantummanagerbutton()
 	{
 
-		if(!$this->install_quantummanager)
+		if (!$this->install_quantummanager)
 		{
 			return;
 		}
 
-		JLoader::register('QuantummanagerHelper', JPATH_ROOT . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
-		JLoader::register('QuantummanagerbuttonHelper', JPATH_ROOT . '/plugins/editors-xtd/quantummanagerbutton/helper.php');
 
 		$app  = Factory::getApplication();
 		$data = $app->input->getArray();
 		$task = $app->input->get('plugin_task');
-		$html = '';
 
 		if (!$this->accessCheck())
 		{
@@ -215,7 +147,7 @@ EOT
 			$type            = explode('.', $file);
 			$filetype        = end($type);
 			$filesize        = filesize(JPATH_ROOT . '/' . $file);
-			$scopesTemplate  = $this->params->get('scopes', QuantummanagerbuttonHelper::defaultValues());
+			$scopesTemplate  = $this->params->get('scopes', ButtonHelper::defaultValues());
 			$scopesCustom    = $this->params->get('customscopes', []);
 			$variables       = [];
 			$variablesParams = [];
@@ -224,7 +156,7 @@ EOT
 			$shortCode = false;
 			$template  = '<a href="{file}" target="_blank">{name}</a>';
 
-			if(is_array($scopesCustom))
+			if (is_array($scopesCustom))
 			{
 				$scopesCustom = [];
 			}
@@ -247,7 +179,7 @@ EOT
 					{
 						foreach ($params['files'] as $item)
 						{
-							$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
+							$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . $item['file'];
 							$name     = explode('/', $file);
 							$filename = end($name);
 							$type     = explode('.', $file);
@@ -319,7 +251,7 @@ EOT
 								$variablesForTemplate = [];
 								foreach ($params['files'] as $item)
 								{
-									$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
+									$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . $item['file'];
 									$name     = explode('/', $file);
 									$filename = end($name);
 									$type     = explode('.', $file);
@@ -426,7 +358,6 @@ EOT
 
 	}
 
-
 	protected function accessCheck()
 	{
 
@@ -436,7 +367,6 @@ EOT
 		}
 
 		// проверяем на включенность параметра
-		JLoader::register('QuantummanagerHelper', JPATH_ADMINISTRATOR . '/components/com_quantummanager/helpers/quantummanager.php');
 
 		if (!(int) QuantummanagerHelper::getParamsComponentValue('front', 0))
 		{

@@ -9,6 +9,7 @@
 	<authorUrl>https://www.norrnext.com</authorUrl>
 	<version>1.4</version>
 	<description>PLG_BUTTON_QUANTUMMANAGERBUTTON_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\Button\QuantumManagerButton</namespace>
 	<scriptfile>script.php</scriptfile>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_editors-xtd_quantummanagerbutton.ini</language>
@@ -21,9 +22,8 @@
 		<folder>js</folder>
 	</media>
 	<files>
-		<filename plugin="quantummanagerbutton">quantummanagerbutton.php</filename>
-		<filename plugin="quantummanagerbutton">helper.php</filename>
-		<folder>fields</folder>
+		<folder>services</folder>
+		<folder plugin="quantummanagerbutton">src</folder>
 		<folder>tmpl</folder>
 	</files>
 	<config>
