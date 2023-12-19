@@ -251,7 +251,13 @@ class QuantumManagerButton extends CMSPlugin
 								$variablesForTemplate = [];
 								foreach ($params['files'] as $item)
 								{
-									$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
+									$file = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
+
+									if (!file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
+									{
+										continue;
+									}
+
 									$name     = explode(DIRECTORY_SEPARATOR, $file);
 									$filename = end($name);
 									$type     = explode('.', $file);
@@ -265,14 +271,11 @@ class QuantumManagerButton extends CMSPlugin
 										'{size}'     => QuantummanagerHelper::formatFileSize($filesize),
 									];
 
-									if (file_exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $file))
+									if (in_array($filetype, ['jpg', 'jpeg', 'png']))
 									{
-										if (in_array($filetype, ['jpg', 'jpeg', 'png']))
-										{
-											list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
-											$variables['{imagewidth}']  = $width;
-											$variables['{imageheight}'] = $height;
-										}
+										list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
+										$variables['{imagewidth}']  = $width;
+										$variables['{imageheight}'] = $height;
 									}
 
 									foreach ($item['fields'] as $key => $value)
