@@ -84,23 +84,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             ).done(function (response) {
 
                                 let editor = QuantumUtils.getUrlParameter('e_name');
-                                let isJoomla4 = QuantumUtils.getUrlParameter('isjoomla4');
                                 let tag = response;
-
-                                if(isJoomla4 === '1') {
-                                    window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
-                                    window.parent.Joomla.Modal.getCurrent().close();
-                                } else {
-                                    if (window.Joomla && Joomla.editors.instances.hasOwnProperty(editor)) {
-                                        Joomla.editors.instances[editor].replaceSelection(tag)
-                                    } else {
-                                        window.parent.jInsertEditorText(tag, editor);
-                                    }
-
-                                    window.parent.jModalClose();
-                                }
-
-
+                                window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
+                                window.parent.Joomla.Modal.getCurrent().close();
                             });
 
                         }]
