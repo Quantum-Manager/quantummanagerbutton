@@ -27,7 +27,7 @@
 		<folder>tmpl</folder>
 	</files>
 	<config>
-		<fields name="params" addfieldpath="/plugins/editors-xtd/quantummanagerbutton/fields">
+		<fields name="params" addfieldprefix="Joomla\Plugin\Button\QuantumManagerButton\Field">
 			<fieldset name="basic">
 
 				<field type="note"

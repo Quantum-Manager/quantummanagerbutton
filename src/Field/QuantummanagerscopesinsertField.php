@@ -13,6 +13,8 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Form\Field\SubformField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\Component\QuantumManager\Administrator\Helper\QuantummanagerHelper;
+use Joomla\Plugin\Button\QuantumManagerButton\Helper\ButtonHelper;
 
 
 /**
@@ -20,7 +22,7 @@ use Joomla\CMS\Factory;
  *
  * @since       version
  */
-class QuantumManagerScopesInsertField extends SubformField
+class QuantummanagerscopesinsertField extends SubformField
 {
 
 
@@ -40,7 +42,7 @@ class QuantumManagerScopesInsertField extends SubformField
 		$scopesForInput = [];
 		$currentValue   = $this->value;
 		$scopes         = QuantummanagerHelper::getAllScope('all');
-		$defaultValues  = QuantummanagerbuttonHelper::defaultValues();
+		$defaultValues  = ButtonHelper::defaultValues();
 		$i              = 0;
 		foreach ($scopes as $scope)
 		{
