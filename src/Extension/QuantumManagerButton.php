@@ -251,12 +251,12 @@ class QuantumManagerButton extends CMSPlugin
 								$variablesForTemplate = [];
 								foreach ($params['files'] as $item)
 								{
-									$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . $item['file'];
-									$name     = explode('/', $file);
+									$file     = QuantummanagerHelper::preparePath($data['path'], false, $scope, true) . DIRECTORY_SEPARATOR . $item['file'];
+									$name     = explode(DIRECTORY_SEPARATOR, $file);
 									$filename = end($name);
 									$type     = explode('.', $file);
 									$filetype = end($type);
-									$filesize = filesize(JPATH_ROOT . '/' . $file);
+									$filesize = filesize(JPATH_ROOT . DIRECTORY_SEPARATOR . $file);
 
 									$variables = [
 										'{file}'     => $file,
