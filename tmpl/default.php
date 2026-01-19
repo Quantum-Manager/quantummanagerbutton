@@ -54,7 +54,7 @@ HTMLHelper::_('script', 'plg_button_quantummanagerbutton/modal.js', [
 ButtonHelper::loadLang();
 $fieldsForContentPlugin       = ButtonHelper::getFieldsForScopes();
 $templatelistForContentPlugin = ButtonHelper::getTemplateListForScopes();
-$groups                       = Factory::getUser()->groups;
+$groups                       = Factory::getApplication()->getIdentity()->groups;
 
 try
 {
@@ -99,13 +99,6 @@ try
 		],
 	];
 
-	if ((int) QuantummanagerHelper::getParamsComponentValue('unsplash', '1'))
-	{
-		$fields['quantumunsplash'] = [
-			'position' => 'bottom'
-		];
-	}
-
 	$actions = QuantummanagerHelper::getActions();
 	if (!$actions->get('core.create'))
 	{
@@ -142,8 +135,6 @@ catch (Exception $e)
 }
 
 ?>
-
-
 <script type="text/javascript">
 
     window.QuantumButtonPlugin = {
@@ -159,7 +150,7 @@ catch (Exception $e)
         'defaultName': '<?php echo Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_DOCS_FIELDSFORM_NAME_NAME'); ?>',
         'defaultNameValue': '<?php echo Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_SCOPES_IMAGES_FIELDSFORM_DEFAULT_NAME'); ?>',
         'insertFile': '<?php echo Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_INSERT_FILE'); ?>',
-        'helpSettings': '<?php echo in_array('2', $groups) || in_array('8', $groups) ? Text::sprintf('PLG_BUTTON_QUANTUMMANAGERBUTTON_HELP_SETTINGS', 'index.php?' . http_build_query(['option' => 'com_plugins', 'view' => 'plugins', (QuantummanagerHelper::isJoomla4() ? 'filter[search]' : 'filter.search') => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON')])) : '' ?>',
+        'helpSettings': '<?php echo in_array('2', $groups) || in_array('8', $groups) ? Text::sprintf('PLG_BUTTON_QUANTUMMANAGERBUTTON_HELP_SETTINGS', 'index.php?' . http_build_query(['option' => 'com_plugins', 'view' => 'plugins', 'filter[search]' => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON')])) : '' ?>',
     };
 </script>
 

@@ -1,4 +1,7 @@
-<?php namespace Joomla\Plugin\Button\QuantumManagerButton\Extension;
+<?php
+
+namespace Joomla\Plugin\Button\QuantumManagerButton\Extension;
+
 /**
  * @package    quantummanagerbutton
  * @author     Dmitry Tsymbal <cymbal@delo-design.ru>
@@ -9,35 +12,20 @@
 
 defined('_JEXEC') or die;
 
-use Exception;
-use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Editor\Button\Button;
+use Joomla\CMS\Event\Editor\EditorButtonsSetupEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Session\Session;
 use Joomla\Component\QuantumManager\Administrator\Helper\QuantummanagerHelper;
 use Joomla\Plugin\Button\QuantumManagerButton\Helper\ButtonHelper;
 
 class QuantumManagerButton extends CMSPlugin
 {
 
-	/**
-	 * Application object
-	 *
-	 * @var    CMSApplication
-	 * @since  1.0.0
-	 */
 	protected $app;
 
-	/**
-	 * Load the language file on instantiation.
-	 *
-	 * @var  boolean
-	 *
-	 * @since   1.1.0
-	 */
 	protected $autoloadLanguage = true;
 
 	protected $install_quantummanager = false;
@@ -50,22 +38,21 @@ class QuantumManagerButton extends CMSPlugin
 		{
 			$this->install_quantummanager = true;
 		}
-
 	}
 
-	/**
-	 * Display the button.
-	 *
-	 * @param   string  $name  The name of the button to add.
-	 *
-	 * @return  CMSObject  The button options as CMSObject.
-	 *
-	 * @throws  Exception
-	 *
-	 * @since   1.1.0
-	 */
-	public function onDisplay($name, $asset, $author)
+	public static function getSubscribedEvents(): array
 	{
+		return [
+			'onDisplay'                  => 'onDisplay',
+			'onAjaxQuantummanagerbutton' => 'onAjax',
+		];
+	}
+
+	public function onEditorButtonsSetup(EditorButtonsSetupEvent $event): void
+	{
+
+		$subject = $event->getButtonsRegistry();
+		$name    = $event->getEditorId();
 
 		if (!$this->install_quantummanager)
 		{
@@ -79,40 +66,37 @@ class QuantumManagerButton extends CMSPlugin
 
 		$function = 'function(){}';
 		$link     = 'index.php?option=com_ajax&amp;plugin=quantummanagerbutton&amp;group=editors-xtd&amp;format=html&amp;tmpl=component&amp;plugin.task=getmodal&amp;e_name=' . $name . '&amp;asset=com_content&amp;author='
-			. Session::getFormToken() . '=1&amp;function=' . $function;
+			. Factory::getApplication()->getSession()->getFormToken() . '=1&amp;function=' . $function;
 
-		$button          = new CMSObject();
-		$button->modal   = true;
-		$button->class   = 'btn';
-		$button->link    = $link;
-		$button->text    = Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_BUTTON');
-		$button->name    = $this->_type . '_' . $this->_name;
-		$button->icon    = 'pictures';
-		$button->iconSVG = '<svg width="24" height="24" viewBox="0 0 512 512"><path d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48'
-			. ' 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 336H54a6 6 0 0 1-6-6V118a6 6 0 0 1 6-6h404a6 6'
-			. ' 0 0 1 6 6v276a6 6 0 0 1-6 6zM128 152c-22.091 0-40 17.909-40 40s17.909 40 40 40 40-17.909 40-40-17.909-40-40-40'
-			. 'zM96 352h320v-80l-87.515-87.515c-4.686-4.686-12.284-4.686-16.971 0L192 304l-39.515-39.515c-4.686-4.686-12.284-4'
-			. '.686-16.971 0L96 304v48z"></path></svg>';
-		$button->options = [
-			'height'          => '400px',
-			'width'           => '800px',
-			'bodyHeight'      => '70',
-			'modalWidth'      => '80',
-			'tinyPath'        => $link,
-			'confirmCallback' => 'Joomla.getImage(Joomla.selectedMediaFile, \'' . $name . '\', this)',
-		];
+		$button = new Button(
+			$this->_name,
+			[
+				'modal'   => true,
+				'class'   => 'btn',
+				'link'    => $link,
+				'text'    => Text::_('PLG_BUTTON_QUANTUMMANAGERBUTTON_BUTTON'),
+				'icon'    => 'puzzle',
+				'iconSVG' => '<svg viewBox="0 0 576 512" width="24" height="24"><path d="M519.442 288.651c-41.519 0-59.5 31.593-82.058 31.593C377.'
+					. '409 320.244 432 144 432 144s-196.288 80-196.288-3.297c0-35.827 36.288-46.25 36.288-85.985C272 19.216 243.885 0 210.'
+					. '539 0c-34.654 0-66.366 18.891-66.366 56.346 0 41.364 31.711 59.277 31.711 81.75C175.885 207.719 0 166.758 0 166.758'
+					. 'v333.237s178.635 41.047 178.635-28.662c0-22.473-40-40.107-40-81.471 0-37.456 29.25-56.346 63.577-56.346 33.673 0 61'
+					. '.788 19.216 61.788 54.717 0 39.735-36.288 50.158-36.288 85.985 0 60.803 129.675 25.73 181.23 25.73 0 0-34.725-120.1'
+					. '01 25.827-120.101 35.962 0 46.423 36.152 86.308 36.152C556.712 416 576 387.99 576 354.443c0-34.199-18.962-65.792-56'
+					. '.558-65.792z"></path></svg>',
+				'name'    => $this->_type . '_' . $this->_name,
+			]
+		);
 
-		return $button;
+		$subject->add($button);
 	}
 
-	public function onAjaxQuantummanagerbutton()
+	public function onAjaxQuantummanagerbutton(): void
 	{
 
 		if (!$this->install_quantummanager)
 		{
 			return;
 		}
-
 
 		$app  = Factory::getApplication();
 		$data = $app->input->getArray();
@@ -232,7 +216,6 @@ class QuantumManagerButton extends CMSPlugin
 							$templateList = (object) $templateList;
 							if (isset($params['template']) && $templateList->templatename === $params['template'])
 							{
-								//собираем по выбранному шаблону
 								$templatebefore = '';
 								$templateitems  = '';
 								$templateafter  = '';
@@ -346,7 +329,6 @@ class QuantumManagerButton extends CMSPlugin
 								{
 									$html = $templatebefore . $templateitems . $templateafter;
 								}
-
 							}
 						}
 					}
@@ -358,26 +340,21 @@ class QuantumManagerButton extends CMSPlugin
 
 			$app->close();
 		}
-
 	}
 
-	protected function accessCheck()
+	private function accessCheck()
 	{
-
 		if ($this->app->isClient('administrator'))
 		{
 			return true;
 		}
-
-		// проверяем на включенность параметра
 
 		if (!(int) QuantummanagerHelper::getParamsComponentValue('front', 0))
 		{
 			return false;
 		}
 
-		// проверяем что пользователь авторизован
-		if (Factory::getUser()->id === 0)
+		if (Factory::getApplication()->getIdentity()->id === 0)
 		{
 			return false;
 		}

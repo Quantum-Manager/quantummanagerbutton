@@ -1,4 +1,6 @@
-<?php namespace Joomla\Plugin\Button\QuantumManagerButton\Field;
+<?php
+
+namespace Joomla\Plugin\Button\QuantumManagerButton\Field;
 
 /**
  * @package    quantummanagerbutton
@@ -11,39 +13,25 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\Field\SubformField;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Component\QuantumManager\Administrator\Helper\QuantummanagerHelper;
 use Joomla\Plugin\Button\QuantumManagerButton\Helper\ButtonHelper;
 
-
-/**
- * @package     ${NAMESPACE}
- *
- * @since       version
- */
 class QuantummanagerscopesinsertField extends SubformField
 {
 
+	protected $type = 'Quantummanagerscopesinsert';
 
-	/**
-	 * @var string
-	 */
-	public $type = 'QuantumManagerScopesInsert';
-
-
-	/**
-	 * @return string
-	 */
 	public function getInput()
 	{
-		Factory::getLanguage()->load('com_quantummanager', JPATH_ROOT . '/administrator/components/com_quantummanager');
+		Factory::getApplication()->getLanguage()->load('com_quantummanager', JPATH_ROOT . '/administrator/components/com_quantummanager');
 
 		$scopesForInput = [];
 		$currentValue   = $this->value;
 		$scopes         = QuantummanagerHelper::getAllScope('all');
 		$defaultValues  = ButtonHelper::defaultValues();
 		$i              = 0;
+
 		foreach ($scopes as $scope)
 		{
 
@@ -65,27 +53,20 @@ class QuantummanagerscopesinsertField extends SubformField
 				}
 			}
 
-			$title = '';
-
-			if (substr_count($scope->title, 'COM_QUANTUMMANAGER'))
-			{
-				$title = Text::_($scope->title);
-			}
-
 			$defaultTemplateList = '';
-			$defaultFieldsform   = '';
+			$defaultFieldsForm   = '';
 
 			if (isset($defaultValues[$scope->id]))
 			{
 				$defaultTemplateList = $defaultValues[$scope->id]->templatelist;
-				$defaultFieldsform   = json_encode($defaultValues[$scope->id]->fieldsform);
+				$defaultFieldsForm   = json_encode($defaultValues[$scope->id]->fieldsform);
 			}
 
 			$scopesForInput['scopes' . $i] = [
 				'title'        => $scope->title,
 				'titleLabel'   => $scope->title,
 				'id'           => $scope->id,
-				'fieldsform'   => $findValue !== null ? $findValue['fieldsform'] : $defaultFieldsform,
+				'fieldsform'   => $findValue !== null ? $findValue['fieldsform'] : $defaultFieldsForm,
 				'templatelist' => $findValue !== null ? $findValue['templatelist'] : $defaultTemplateList,
 			];
 
@@ -93,10 +74,8 @@ class QuantummanagerscopesinsertField extends SubformField
 		}
 
 		$this->value = $scopesForInput;
-		$html        = parent::getInput();
 
-		return $html;
+		return parent::getInput();
 	}
-
 
 }

@@ -1,4 +1,6 @@
-<?php namespace Joomla\Plugin\Button\QuantumManagerButton\Helper;
+<?php
+
+namespace Joomla\Plugin\Button\QuantumManagerButton\Helper;
 
 /**
  * @package    quantummanagerbutton
@@ -13,34 +15,23 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\Database\DatabaseDriver;
+use stdClass;
 
 class ButtonHelper
 {
 
+	public static ?stdClass $template = null;
 
-	/**
-	 * @var
-	 * @since version
-	 */
-	public static $template;
-
-
-	public static function loadLang()
+	public static function loadLang(): void
 	{
-		Factory::getLanguage()->load('plg_editors-xtd_quantummanagerbutton', JPATH_ADMINISTRATOR);
+		Factory::getApplication()->getLanguage()->load('plg_editors-xtd_quantummanagerbutton', JPATH_ADMINISTRATOR);
 	}
 
-
-	/**
-	 *
-	 * @return array
-	 *
-	 * @since version
-	 */
-	public static function getFieldsForScopes()
+	public static function getFieldsForScopes(): array
 	{
 
-		$db        = Factory::getDbo();
+		$db        = Factory::getContainer()->get(DatabaseDriver::class);
 		$query     = $db->getQuery(true)
 			->select($db->quoteName(array('params')))
 			->from('#__extensions')
@@ -48,7 +39,11 @@ class ButtonHelper
 		$extension = $db->setQuery($query)->loadObject();
 		$params    = json_decode($extension->params, JSON_OBJECT_AS_ARRAY);
 
-		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
+		if (
+			!isset($params['scopes'])
+			|| empty($params['scopes'])
+			|| count((array) $params['scopes']) === 0
+		)
 		{
 			$scopes        = self::defaultValues();
 			$scopes_custom = [];
@@ -82,16 +77,10 @@ class ButtonHelper
 		return $output;
 	}
 
-
-	/**
-	 *
-	 * @return array
-	 *
-	 * @since version
-	 */
-	public static function getTemplateListForScopes()
+	public static function getTemplateListForScopes(): array
 	{
-		$db        = Factory::getDbo();
+		/** @var DatabaseDriver $db */
+		$db        = Factory::getContainer()->get(DatabaseDriver::class);
 		$query     = $db->getQuery(true)
 			->select($db->quoteName(array('params')))
 			->from('#__extensions')
@@ -99,7 +88,11 @@ class ButtonHelper
 		$extension = $db->setQuery($query)->loadObject();
 		$params    = json_decode($extension->params, JSON_OBJECT_AS_ARRAY);
 
-		if (!isset($params['scopes']) || empty($params['scopes']) || count((array) $params['scopes']) === 0)
+		if (
+			!isset($params['scopes'])
+			|| empty($params['scopes'])
+			|| count((array) $params['scopes']) === 0
+		)
 		{
 			$scopes        = self::defaultValues();
 			$scopes_custom = [];
@@ -179,22 +172,11 @@ class ButtonHelper
 		return $output;
 	}
 
-
-	/**
-	 * @param $layoutId
-	 *
-	 * @return string
-	 *
-	 * @throws Exception
-	 * @since version
-	 */
-	public static function renderLayout($layoutId)
+	public static function renderLayout($layoutId): string
 	{
-		$app = Factory::getApplication();
-
-		if (empty(self::$template))
+		if (self::$template === null)
 		{
-			$db    = Factory::getDbo();
+			$db    = Factory::getContainer()->get(DatabaseDriver::class);
 			$query = $db->getQuery(true);
 			$query->select('template')
 				->from('#__template_styles as e')
@@ -224,16 +206,9 @@ class ButtonHelper
 		return $output;
 	}
 
-
-	/**
-	 *
-	 * @return array
-	 *
-	 * @since version
-	 */
-	public static function defaultValues()
+	public static function defaultValues(): array
 	{
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$lang->load('plg_editors-xtd_quantummanagerbutton', JPATH_ADMINISTRATOR);
 		$lang->load('com_quantummanager', JPATH_ROOT . '/administrator/components/com_quantummanager');
 
@@ -318,6 +293,5 @@ class ButtonHelper
 			]
 		];
 	}
-
 
 }
