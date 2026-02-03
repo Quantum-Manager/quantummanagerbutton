@@ -25,8 +25,6 @@ return new class () implements ServiceProviderInterface {
 
 			protected string $minimumPhp = '8.1';
 
-			protected array $updateMethods = [];
-
 			public function __construct(AdministratorApplication $app)
 			{
 				$this->app = $app;
