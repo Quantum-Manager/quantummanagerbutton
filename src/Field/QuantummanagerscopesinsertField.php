@@ -28,7 +28,7 @@ class QuantummanagerscopesinsertField extends SubformField
 
 		$scopesForInput = [];
 		$currentValue   = $this->value;
-		$scopes         = QuantummanagerHelper::getAllScope('all');
+		$scopes         = QuantummanagerHelper::getAllScope();
 		$defaultValues  = ButtonHelper::defaultValues();
 		$i              = 0;
 
